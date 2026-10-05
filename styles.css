@@ -219,6 +219,15 @@ a.resource-link:hover { background: var(--color-accent); border-color: var(--col
 .btn-demo-link:hover:not(:disabled) { text-decoration: underline; }
 .btn-demo-link:disabled { color: var(--color-muted); opacity: .65; }
 .field-hint { font-size: .725rem; color: var(--color-muted); line-height: 1.4; }
+.eval-upload-group { gap: 10px; }
+.eval-upload-intro, .eval-contract-note { margin: 0; font-size: .775rem; line-height: 1.5; color: var(--color-muted); }
+.eval-upload-intro code, .eval-contract-note code, .csv-upload-slot .eval-label code { font-family: var(--font-code); font-size: .92em; color: var(--color-ink); }
+.csv-upload-list { display: grid; gap: 10px; }
+.csv-upload-slot { display: flex; flex-direction: column; gap: 6px; padding: 12px; border: 1px solid var(--color-line); border-radius: 6px; background: color-mix(in srgb, var(--color-soft) 60%, var(--color-paper)); }
+.csv-upload-slot .eval-dropzone { padding: 14px 12px; background: var(--color-paper); }
+.csv-upload-slot .eval-file-actions button { min-height: 30px; }
+.file-slot-note.warning { color: #9a5b00; font-weight: 600; }
+.eval-contract-note { padding: 10px 12px; border-left: 3px solid var(--color-line); background: var(--color-soft); }
 .eval-select, .eval-input { width: 100%; min-height: 42px; padding: 9px 12px; font-family: var(--font-body); font-size: .875rem; border: 1px solid var(--color-line); border-radius: 4px; background: var(--color-paper); color: var(--color-ink); }
 .eval-select:focus-visible, .eval-input:focus-visible, .eval-dropzone:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .eval-dropzone { border: 1.5px dashed var(--color-line); border-radius: 6px; padding: 22px 16px; text-align: center; background: var(--color-soft); cursor: pointer; position: relative; }
