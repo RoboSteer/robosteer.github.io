@@ -1,0 +1,7 @@
+Stand at the kitchen counter
+Lean forward slightly
+Pour ingredients from bowl into food processor
+Rotate body slightly left
+Extend right arm to pour
+Retract right arm and move leftward
+Generate smooth future motion

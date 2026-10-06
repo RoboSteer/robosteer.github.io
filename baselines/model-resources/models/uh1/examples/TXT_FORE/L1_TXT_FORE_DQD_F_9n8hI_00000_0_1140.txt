@@ -1,0 +1,7 @@
+right arm extends to pick up tray
+both arms move forward to place tray on table
+right arm lifts glass
+both arms gesture outward while speaking
+feet planted, shift weight slightly
+turn head and body slightly right
+Generate smooth future motion

@@ -1,0 +1,3 @@
+component_id,display_name,documentation_status,code_status,validation_status,path
+gmr,GMR,guide_available,not_published,limited_interface_checks,components/gmr
+groot_wholebodycontrol,GR00T-WholeBodyControl,template_ready,not_published,pending,components/groot_wholebodycontrol

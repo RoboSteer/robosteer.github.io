@@ -1,0 +1,92 @@
+[
+  {
+    "path": "LICENSE",
+    "bytes": 1060,
+    "sha256": "073965407e48161db1213cc08915a41b734bae7602ff8738dc33db17ba01f5c8"
+  },
+  {
+    "path": "LICENSE_SCOPE.md",
+    "bytes": 947,
+    "sha256": "a8c9d9983be5807a7fdc23960fe1b43c3e0d6bbdc4d64f01070e21c3251575a5"
+  },
+  {
+    "path": "PUBLIC_SCOPE.md",
+    "bytes": 1281,
+    "sha256": "512cd10c291dada8e289e2b56e50abc81caf2d2022bb2b4ce939a786617f5757"
+  },
+  {
+    "path": "README.md",
+    "bytes": 1281,
+    "sha256": "512cd10c291dada8e289e2b56e50abc81caf2d2022bb2b4ce939a786617f5757"
+  },
+  {
+    "path": "README_PIPELINES.md",
+    "bytes": 7545,
+    "sha256": "6799b376d35bfc9980c9895fb990b116ba0b99dcf755af285476e34d1995ef74"
+  },
+  {
+    "path": "README_PIPELINES_zh.md",
+    "bytes": 10529,
+    "sha256": "aa729ac6b05da2468826be4b3802a735f349a6a737c3d316e2e21ee610a7ded7"
+  },
+  {
+    "path": "SHA256SUMS",
+    "bytes": 1521,
+    "sha256": "9f4870d4d901e2e3421edd7294d0348aaa874f8b4a456ebef403c67cad2bcaf5"
+  },
+  {
+    "path": "environments/INSTALL.md",
+    "bytes": 7054,
+    "sha256": "d111eb52748d1fb825f5c1e18576d9d857215ee022bd1263df282030688dd622"
+  },
+  {
+    "path": "environments/INSTALL_zh.md",
+    "bytes": 6767,
+    "sha256": "7de0eb62ee751b07a5a43c5bd6e3a58edfb3d8aa6af17ce454fa9f689cbbfbe3"
+  },
+  {
+    "path": "examples/audio/synthetic_rhythm.wav",
+    "bytes": 153644,
+    "sha256": "efa2570f407968e60b9eb821b7a903198c13347ffd53e648224de1908ba37783"
+  },
+  {
+    "path": "examples/text/walk.txt",
+    "bytes": 31,
+    "sha256": "4527feec0cda0cf7d668ef8985fbfa545d3d43416a35638c85b6c45fcfc90b68"
+  },
+  {
+    "path": "examples/text/wave.txt",
+    "bytes": 48,
+    "sha256": "962a524dd0bfe4d3f73f54d1a3f14ae66acfef1586212255e6eb0b61089112c8"
+  },
+  {
+    "path": "tools/pipeline/generate.py",
+    "bytes": 4198,
+    "sha256": "8a838fa29c6e894e663ecdf9a3bc544202668581889fb4234865ac0f0eaeaaf8"
+  },
+  {
+    "path": "tools/pipeline/pipeline.py",
+    "bytes": 13198,
+    "sha256": "0dd66bc27bf30c258254ed3b38da813e8ef6bfce63230d979a8f96c195ebd48b"
+  },
+  {
+    "path": "tools/pipeline/run_audio.py",
+    "bytes": 72,
+    "sha256": "a5fa1e762bc04d35d6ade249c337227ad5542f4a31ac5b15bafeb7001f048f95"
+  },
+  {
+    "path": "tools/pipeline/run_text.py",
+    "bytes": 71,
+    "sha256": "9529c7e005dd9828821ab2c1a4128be55fce3ccd668b1b5b90b73bb95239407b"
+  },
+  {
+    "path": "tools/pipeline/runtime.example.json",
+    "bytes": 192,
+    "sha256": "4f5e5e02835fe39dc97c3238c1d8004fb5ef6920da320494d08390dec1fb0929"
+  },
+  {
+    "path": "tools/pipeline/validate.py",
+    "bytes": 2408,
+    "sha256": "e7153b1b6f74268d8de2614d23916102389ba798eb3b99903e1fea1cc2f71301"
+  }
+]

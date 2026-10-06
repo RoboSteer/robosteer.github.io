@@ -1,0 +1,4 @@
+right arm extends forward
+right hand grasps door handle
+left arm remains at side
+Generate smooth future motion

@@ -1,0 +1,7 @@
+walks forward across intersection
+bends forward, lowers skateboard to ground
+steps right foot onto skateboard tail, pushes off with left foot
+Generate smooth transition motion
+skateboarder balances on skateboard
+arms extend outward for stability
+body makes slight adjustments

@@ -1,0 +1,32 @@
+{
+  "repo_id": "LeCAR-Lab/BFM-Zero",
+  "revision": "62b4206d68e026de5e5dc7efb1529bccfb95164c",
+  "license": "CC-BY-NC-4.0",
+  "files": [
+    {
+      "source": "new_model_for_training_code_inference/config.json",
+      "target": "config.json",
+      "sha256": "96889c351a919a907f1f6e3001c5213fe5469ffc4fc2d87c0ef52e422eba7d0f",
+      "bytes": 10212,
+      "scope": "Official upstream inference config; differs from sample-generation env-only config"
+    },
+    {
+      "source": "new_model_for_training_code_inference/checkpoint/model/config.json",
+      "target": "checkpoint/model/config.json",
+      "sha256": "52f94d2946ed8912fc12ac9c25b4bf0e68ccdc669a05ea104e8b6c178e91fb46",
+      "bytes": 3807
+    },
+    {
+      "source": "new_model_for_training_code_inference/checkpoint/model/init_kwargs.json",
+      "target": "checkpoint/model/init_kwargs.json",
+      "sha256": "b8df2d6006fbeda9a0bb9a9eb3f21dcccadf165f2252fce108714f81655a0094",
+      "bytes": 57778
+    },
+    {
+      "source": "new_model_for_training_code_inference/checkpoint/model/model.safetensors",
+      "target": "checkpoint/model/model.safetensors",
+      "sha256": "33f410c190877a1348dc3fafa3f0e97b277ad0251b39615ff98e5bd26369e361",
+      "bytes": 3384968272
+    }
+  ]
+}

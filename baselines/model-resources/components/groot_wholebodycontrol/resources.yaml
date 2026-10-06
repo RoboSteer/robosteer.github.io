@@ -1,0 +1,13 @@
+schema_version: 1
+component_id: groot_wholebodycontrol
+display_name: GR00T-WholeBodyControl
+status: information_pending
+upstream:
+  repository: null
+  revision: null
+release:
+  code_included: false
+  weights_included: false
+  runtime_assets_included: false
+  revision: null
+resources: []

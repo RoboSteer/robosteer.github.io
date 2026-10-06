@@ -1,0 +1,4 @@
+reference-profile postprocess: 75/75 numeric verification PASS
+byte-identical downstream files: 743/750
+differing sample: text_pred_generated/TXT_INTER/TXT_INTER_02
+max G1 joint absolute difference (rad): 0.00506928563117981

@@ -1,0 +1,7 @@
+crouches beside a truck
+leans forward to work on a component
+steps forward, turns right, lifts a metal bar with both hands
+Generate smooth transition motion
+Stand upright in front of the truck.
+Hold a metal bar at waist level with right hand.
+Turn torso slightly and point towards engine bay with left hand.

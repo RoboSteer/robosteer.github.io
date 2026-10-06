@@ -1,0 +1,24 @@
+# Runtime-oriented pins from the validated environment; fresh installation is not yet validated.
+numpy==2.2.6
+scipy==1.15.3
+pandas==2.3.3
+scikit-learn==1.7.2
+joblib==1.5.3
+transforms3d==0.4.2
+smplx @ git+https://github.com/vchoutas/smplx@1265df7ba545e8b00f72e7c557c766e15c71632f
+mujoco==3.8.0
+mink==1.1.0
+qpsolvers==4.12.0
+proxsuite==0.7.2
+daqp==0.8.5
+rich==15.0.0
+tqdm==4.67.3
+loop-rate-limiters==1.2.0
+opencv-python==4.13.0.92
+natsort==8.4.0
+psutil==7.2.2
+protobuf==7.34.1
+redis==7.4.0
+hiredis==3.3.1
+imageio==2.37.3
+imageio-ffmpeg==0.6.0

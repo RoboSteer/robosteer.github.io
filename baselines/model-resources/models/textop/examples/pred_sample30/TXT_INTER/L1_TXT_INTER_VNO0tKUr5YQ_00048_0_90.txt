@@ -1,0 +1,7 @@
+turns body 90 degrees right
+shifts weight to right leg
+steps right leg forward and inward
+Generate smooth transition motion
+right arm moves forward
+left arm rises
+right leg steps forward, lean forward slightly, right hand extended open
