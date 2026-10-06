@@ -1,6 +1,6 @@
 // Edit this file when the evaluation backend and its supported providers are ready.
 window.ROBOOSTEER_EVALUATION_CONFIG = Object.freeze({
-  BACKEND_URL: "",
+  BACKEND_URL: "https://family-hopefully-takes-joshua.trycloudflare.com",
   providers: [
     { id: "openai", label: "OpenAI" },
     { id: "google", label: "Google Gemini" },
