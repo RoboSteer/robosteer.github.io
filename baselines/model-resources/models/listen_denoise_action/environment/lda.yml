@@ -1,0 +1,8 @@
+name: robosteer-lda
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9.25
+  - pip=24.0
+  - setuptools=80.9.0
+  - wheel

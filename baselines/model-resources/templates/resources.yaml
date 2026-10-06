@@ -1,0 +1,22 @@
+schema_version: 1
+model_id: null
+status: pending
+upstream:
+  repository: null
+  revision: null
+release:
+  code_included: false
+  code_path: null
+  revision: null
+resources: []
+# Example entry; add only after verification:
+# - id: main_checkpoint
+#   purpose: inference
+#   required_for: [inference]
+#   source_url: null
+#   revision: null
+#   relative_path: null
+#   sha256: null
+#   license: null
+#   manual_registration_required: null
+#   included: false

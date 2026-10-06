@@ -1,0 +1,11 @@
+End-to-end text prediction smoke:
+TXT_FORE: 1/1 generated segments verified
+TXT_INTER: 1/1 generated segments verified
+TXT_RETRO: 1/1 generated segments verified
+text prediction verification: PASS (3 tasks)
+
+Reference output checks:
+TXT_FORE: 5/5 generated segments verified
+TXT_INTER: 5/5 generated segments verified
+TXT_RETRO: 5/5 generated segments verified
+text prediction verification: PASS (15 tasks)

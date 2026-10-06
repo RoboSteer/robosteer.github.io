@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "model_id": "listen_denoise_action",
+  "status": "public_candidate_ready_for_upload",
+  "bundled_files": false,
+  "weights_bundled": false,
+  "datasets_bundled": false,
+  "clean_install_validated": false,
+  "adapter_license": "MIT",
+  "resource_policy": "All listed upstream resources are external and must be obtained under their own licenses; this package does not grant redistribution rights.",
+  "upstream": {
+    "repository": "https://github.com/simonalexanderson/ListenDenoiseAction",
+    "revision": "9b0885b699913b55283c24ad624bd4e8e8ed957c"
+  },
+  "release": {
+    "code_included": "adapters_and_launchers_only",
+    "revision": null,
+    "version": "0.1.0-rc1",
+    "publication": "public_candidate_ready_for_upload",
+    "revision_location": "This package commit and fixed upstream commits are recorded in the package documentation"
+  },
+  "components": {
+    "gmr": {
+      "repository": "https://github.com/YanjieZe/GMR",
+      "revision": "bb1bbe40774794fceb2a7c579a3464a28e68c844",
+      "overlay_required": true
+    },
+    "sonic_assets": {
+      "repository": "https://github.com/NVlabs/GR00T-WholeBodyControl",
+      "revision": "3d3e593369bc1384a8f5d1f22830bf20cb3a6047"
+    }
+  },
+  "resources": [
+    {
+      "id": "lda_u_checkpoint",
+      "purpose": "LDA-U 推理权重",
+      "required": true,
+      "included": false,
+      "file_manifest": "resource_files.json",
+      "files": [
+        "LDA/pretrained_models/dance_LDA-U.ckpt"
+      ],
+      "source_url": "https://zenodo.org/records/8156769/files/dance_LDA-U.ckpt?download=1",
+      "revision": "8156769/v1",
+      "license": "Motorica research terms; redistribution permission not confirmed",
+      "sha256": "ef101e55b03c3da0a701b4c31b40fad2e59426c4c9d0d79b2678fe5204767a41",
+      "note": null
+    },
+    {
+      "id": "lda_checkpoint_optional",
+      "purpose": "非本次默认链的 LDA 权重",
+      "required": false,
+      "included": false,
+      "file_manifest": "resource_files.json",
+      "files": [
+        "LDA/pretrained_models/dance_LDA.ckpt"
+      ],
+      "source_url": "https://zenodo.org/records/8156769/files/dance_LDA.ckpt?download=1",
+      "revision": "8156769/v1",
+      "license": "Motorica research terms; redistribution permission not confirmed",
+      "sha256": "68e0cff056e892b2e26fd810b4cbcbf209836b2b762b72b8a686ca8513de6718",
+      "note": null
+    },
+    {
+      "id": "lda_inference_metadata",
+      "purpose": "实际必需：三列特征表及 BVH 反变换管线",
+      "required": true,
+      "included": false,
+      "file_manifest": "resource_files.json",
+      "files": [
+        "LDA/data/motorica_dance/data_pipe.expmap_30fps.sav",
+        "LDA/data/motorica_dance/ch0_spec_beatact_features.txt"
+      ],
+      "source_url": "https://github.com/simonalexanderson/ListenDenoiseAction/blob/9b0885b699913b55283c24ad624bd4e8e8ed957c/data/motorica_dance/data_pipe.expmap_30fps.sav",
+      "revision": "9b0885b699913b55283c24ad624bd4e8e8ed957c",
+      "license": "Motorica repository terms; redistribute only after permission confirmed",
+      "sha256": null,
+      "note": "Multiple-file hashes are recorded individually in resource_files.json"
+    },
+    {
+      "id": "lda_metadata_optional",
+      "purpose": "其他元数据候选；不作为 LDA-U 最小下载要求",
+      "required": false,
+      "included": false,
+      "file_manifest": "resource_files.json",
+      "files": [
+        "LDA/data/motorica_dance/audio29_features.txt",
+        "LDA/data/motorica_dance/gen_files.txt",
+        "LDA/data/motorica_dance/pose_features.expmap.txt",
+        "LDA/data/motorica_dance/dance_styles.txt",
+        "LDA/data/motorica_dance/dance_test_files.txt",
+        "LDA/data/motorica_dance/dance_train_files.txt",
+        "LDA/data/motorica_dance/audio18_features.txt"
+      ],
+      "source_url": "https://github.com/simonalexanderson/ListenDenoiseAction/blob/9b0885b699913b55283c24ad624bd4e8e8ed957c/data/motorica_dance/audio29_features.txt",
+      "revision": "9b0885b699913b55283c24ad624bd4e8e8ed957c",
+      "license": "Motorica repository terms; redistribute only after permission confirmed",
+      "sha256": null,
+      "note": "Multiple-file hashes are recorded individually in resource_files.json"
+    },
+    {
+      "id": "audio_reference_bounds",
+      "purpose": "显式参考范围：固定 motorica_dance 中十个 audio29 文件",
+      "required": true,
+      "included": false,
+      "file_manifest": "resource_files.json",
+      "files": [
+        "LDA/data/motorica_dance/kthstreet_gKR_sFM_cAll_d01_mKR_ch01_chargedcableupyour_001_01.audio29_30fps.pkl",
+        "LDA/data/motorica_dance/kthstreet_gPO_sFM_cAll_d01_mPO_ch01_bombom_002_00.audio29_30fps.pkl",
+        "LDA/data/motorica_dance/kthstreet_gPO_sFM_cAll_d02_mPO_ch01_bombom_001_00.audio29_30fps.pkl",
+        "LDA/data/motorica_dance/kthstreet_gLO_sFM_cAll_d02_mLO_ch01_arethafranklinrocksteady_002_00.audio29_30fps.pkl",
+        "LDA/data/motorica_dance/kthstreet_gLO_sFM_cAll_d02_mLO_ch01_arethafranklinrocksteady_002_01.audio29_30fps.pkl",
+        "LDA/data/motorica_dance/kthstreet_gPO_sFM_cAll_d02_mPO_ch01_bombom_001_01.audio29_30fps.pkl",
+        "LDA/data/motorica_dance/kthstreet_gPO_sFM_cAll_d01_mPO_ch01_bombom_002_01.audio29_30fps.pkl",
+        "LDA/data/motorica_dance/kthstreet_gLH_sFM_cAll_d02_mLH_ch01_lala_001_01.audio29_30fps.pkl",
+        "LDA/data/motorica_dance/kthstreet_gLH_sFM_cAll_d02_mLH_ch01_lala_001_00.audio29_30fps.pkl",
+        "LDA/data/motorica_dance/kthstreet_gKR_sFM_cAll_d01_mKR_ch01_chargedcableupyour_001_00.audio29_30fps.pkl"
+      ],
+      "source_url": "https://github.com/simonalexanderson/ListenDenoiseAction/blob/9b0885b699913b55283c24ad624bd4e8e8ed957c/data/motorica_dance/kthstreet_gKR_sFM_cAll_d01_mKR_ch01_chargedcableupyour_001_01.audio29_30fps.pkl",
+      "revision": "9b0885b699913b55283c24ad624bd4e8e8ed957c",
+      "license": "Motorica repository terms; external download",
+      "sha256": null,
+      "note": "Multiple-file hashes are recorded individually in resource_files.json"
+    },
+    {
+      "id": "smplx_neutral",
+      "purpose": "默认 neutral 人体拟合与重定向",
+      "required": true,
+      "included": false,
+      "file_manifest": "resource_files.json",
+      "files": [
+        "GMR/assets/body_models/smplx/SMPLX_NEUTRAL.pkl"
+      ],
+      "source_url": "https://smpl-x.is.tue.mpg.de/",
+      "revision": null,
+      "license": "SMPL-X terms; user must obtain separately",
+      "sha256": "381c808965deb4f5e845f8c3eddb0cd69930cc72e5774ce4f34c4ce3cf058361",
+      "note": null
+    },
+    {
+      "id": "gmr_g1_ik",
+      "purpose": "SMPL-X 到 G1 的 IK 配置",
+      "required": true,
+      "included": false,
+      "file_manifest": "resource_files.json",
+      "files": [
+        "GMR/general_motion_retargeting/ik_configs/smplx_to_g1.json"
+      ],
+      "source_url": "https://github.com/YanjieZe/GMR/blob/bb1bbe40774794fceb2a7c579a3464a28e68c844/general_motion_retargeting/ik_configs/smplx_to_g1.json",
+      "revision": "bb1bbe40774794fceb2a7c579a3464a28e68c844",
+      "license": "MIT",
+      "sha256": "db35f79822fb3bc712cd473d672e60bb91214528524d363e44d7c9da0c5cfc9b",
+      "note": null
+    },
+    {
+      "id": "gmr_g1_assets",
+      "purpose": "GMR MuJoCo XML 与 mesh 依赖",
+      "required": true,
+      "included": false,
+      "file_manifest": "resource_files.json",
+      "files": [
+        "GMR/assets/unitree_g1/g1_mocap_29dof.xml",
+        "GMR/assets/unitree_g1/meshes/pelvis.STL",
+        "GMR/assets/unitree_g1/meshes/pelvis_contour_link.STL",
+        "GMR/assets/unitree_g1/meshes/left_hip_pitch_link.STL",
+        "GMR/assets/unitree_g1/meshes/left_hip_roll_link.STL",
+        "GMR/assets/unitree_g1/meshes/left_hip_yaw_link.STL",
+        "GMR/assets/unitree_g1/meshes/left_knee_link.STL",
+        "GMR/assets/unitree_g1/meshes/left_ankle_pitch_link.STL",
+        "GMR/assets/unitree_g1/meshes/left_ankle_roll_link.STL",
+        "GMR/assets/unitree_g1/meshes/right_hip_pitch_link.STL",
+        "GMR/assets/unitree_g1/meshes/right_hip_roll_link.STL",
+        "GMR/assets/unitree_g1/meshes/right_hip_yaw_link.STL",
+        "GMR/assets/unitree_g1/meshes/right_knee_link.STL",
+        "GMR/assets/unitree_g1/meshes/right_ankle_pitch_link.STL",
+        "GMR/assets/unitree_g1/meshes/right_ankle_roll_link.STL",
+        "GMR/assets/unitree_g1/meshes/waist_yaw_link_rev_1_0.STL",
+        "GMR/assets/unitree_g1/meshes/waist_roll_link_rev_1_0.STL",
+        "GMR/assets/unitree_g1/meshes/torso_link_rev_1_0.STL",
+        "GMR/assets/unitree_g1/meshes/logo_link.STL",
+        "GMR/assets/unitree_g1/meshes/head_link.STL",
+        "GMR/assets/unitree_g1/meshes/left_shoulder_pitch_link.STL",
+        "GMR/assets/unitree_g1/meshes/left_shoulder_roll_link.STL",
+        "GMR/assets/unitree_g1/meshes/left_shoulder_yaw_link.STL",
+        "GMR/assets/unitree_g1/meshes/left_elbow_link.STL",
+        "GMR/assets/unitree_g1/meshes/left_wrist_roll_link.STL",
+        "GMR/assets/unitree_g1/meshes/left_wrist_pitch_link.STL",
+        "GMR/assets/unitree_g1/meshes/left_wrist_yaw_link.STL",
+        "GMR/assets/unitree_g1/meshes/left_rubber_hand.STL",
+        "GMR/assets/unitree_g1/meshes/right_shoulder_pitch_link.STL",
+        "GMR/assets/unitree_g1/meshes/right_shoulder_roll_link.STL",
+        "GMR/assets/unitree_g1/meshes/right_shoulder_yaw_link.STL",
+        "GMR/assets/unitree_g1/meshes/right_elbow_link.STL",
+        "GMR/assets/unitree_g1/meshes/right_wrist_roll_link.STL",
+        "GMR/assets/unitree_g1/meshes/right_wrist_pitch_link.STL",
+        "GMR/assets/unitree_g1/meshes/right_wrist_yaw_link.STL",
+        "GMR/assets/unitree_g1/meshes/right_rubber_hand.STL"
+      ],
+      "source_url": "https://github.com/YanjieZe/GMR/blob/bb1bbe40774794fceb2a7c579a3464a28e68c844/assets/unitree_g1/g1_mocap_29dof.xml",
+      "revision": "bb1bbe40774794fceb2a7c579a3464a28e68c844",
+      "license": "BSD-3-Clause",
+      "sha256": null,
+      "note": "Multiple-file hashes are recorded individually in resource_files.json"
+    },
+    {
+      "id": "sonic_g1_assets",
+      "purpose": "SONIC XML；mesh 仅作完整资产清单",
+      "required": true,
+      "included": false,
+      "file_manifest": "resource_files.json",
+      "files": [
+        "GR00T/gear_sonic_deploy/g1/g1_29dof.xml",
+        "GR00T/gear_sonic_deploy/g1/meshes/pelvis.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/pelvis_contour_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/left_hip_pitch_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/left_hip_roll_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/left_hip_yaw_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/left_knee_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/left_ankle_pitch_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/left_ankle_roll_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/right_hip_pitch_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/right_hip_roll_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/right_hip_yaw_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/right_knee_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/right_ankle_pitch_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/right_ankle_roll_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/waist_yaw_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/waist_roll_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/torso_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/logo_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/head_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/waist_support_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/left_shoulder_pitch_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/left_shoulder_roll_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/left_shoulder_yaw_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/left_elbow_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/left_wrist_roll_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/left_wrist_pitch_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/left_wrist_yaw_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/left_rubber_hand.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/right_shoulder_pitch_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/right_shoulder_roll_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/right_shoulder_yaw_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/right_elbow_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/right_wrist_roll_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/right_wrist_pitch_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/right_wrist_yaw_link.STL",
+        "GR00T/gear_sonic_deploy/g1/meshes/right_rubber_hand.STL"
+      ],
+      "source_url": "https://github.com/NVlabs/GR00T-WholeBodyControl/blob/3d3e593369bc1384a8f5d1f22830bf20cb3a6047/gear_sonic_deploy/g1/g1_29dof.xml",
+      "revision": "3d3e593369bc1384a8f5d1f22830bf20cb3a6047",
+      "license": "asset-specific provenance/redistribution scope pending",
+      "sha256": null,
+      "note": "Multiple-file hashes are recorded individually in resource_files.json"
+    }
+  ],
+  "validation": {
+    "date": "2026-10-04",
+    "samples": 10,
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "scope": "server-working-copy pipeline and output structure using existing lda/gmr environments",
+    "clean_install": false,
+    "physics_tracking": false,
+    "evidence": "validation/report.md"
+  },
+  "environment_policy": {
+    "mode": "configuration_only",
+    "runtime_baseline": "existing_lda_gmr_environments",
+    "clean_install_validated": false,
+    "notes": "environment/ documents migration recipes; fresh environment installation is not an acceptance requirement"
+  }
+}

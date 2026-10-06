@@ -1,0 +1,7 @@
+left leg kicks forward
+ball propelled forward
+body rotates forward
+Generate smooth transition motion
+body continues rotating
+left leg lowers to neutral position
+right leg returns to ground

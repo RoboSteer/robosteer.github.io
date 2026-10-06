@@ -1,0 +1,20 @@
+schema_version: 1
+component_id: gmr
+status: documentation_only
+upstream:
+  repository: https://github.com/YanjieZe/GMR
+  revision: null
+inspected_working_copy:
+  tracked_base_commit: bb1bbe40774794fceb2a7c579a3464a28e68c844
+  local_changes_present: true
+release:
+  code_included: false
+  patches_included: false
+  revision: null
+resources:
+  - id: smplx_body_models
+    source_url: https://smpl-x.is.tue.mpg.de/
+    relative_path: assets/body_models/smplx
+    license_url: https://smpl-x.is.tue.mpg.de/modellicense.html
+    manual_registration_required: true
+    included: false

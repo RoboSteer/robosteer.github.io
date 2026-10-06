@@ -1,0 +1,7 @@
+Generate smooth preceding motion
+turns and walks toward the object
+arms swing naturally with walking motion
+left leg steps forward, followed by right
+feet land softly on the grass
+bends down to pick up white object
+stands back up, holding it in both hands

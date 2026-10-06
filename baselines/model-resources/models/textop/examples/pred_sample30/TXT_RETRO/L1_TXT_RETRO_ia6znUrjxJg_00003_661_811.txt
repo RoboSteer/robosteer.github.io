@@ -1,0 +1,7 @@
+Generate smooth preceding motion
+person straightens up slightly
+person steps back momentarily
+person leans forward again
+right arm holds the cloth
+right arm wipes surface in circular motions
+right arm wipes surface side-to-side

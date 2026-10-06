@@ -1,0 +1,15 @@
+{
+  "code_commit": "49e7f911ae38c79cfd329da7cd26064859f000c9",
+  "exit_code": 0,
+  "motion_id": 0,
+  "latent_shape": [
+    136,
+    256
+  ],
+  "latent_finite": true,
+  "policy_steps": 100,
+  "tracking_source_sha256": "1f216ead86634f99576109d3fa6e0b87fb9b1a3362bfcac72882799e74a5aa70",
+  "inference_config_sha256": "96889c351a919a907f1f6e3001c5213fe5469ffc4fc2d87c0ef52e422eba7d0f",
+  "install_validation": "Reused existing project venv; no fresh environment install; source snapshot and official config tested, checkpoint reused with matching SHA256.",
+  "network_note": "Server HF HTTPS unreachable during test; fixed official config fetched on local machine and transferred; not an automated download test."
+}

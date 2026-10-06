@@ -1,0 +1,60 @@
+{
+  "sample_id": "EL6yyP9_AZg_00059_0_53_music",
+  "passed": true,
+  "details": {
+    "feature_shape": [
+      64,
+      29
+    ],
+    "bvh_frames": 64,
+    "bvh_fps": 30.000300003000028,
+    "bvh_channels": 156,
+    "smplx_frames": 64,
+    "robot_frames": 64,
+    "robot_fps": 30.0,
+    "sonic_frames": 106,
+    "sonic_shapes": {
+      "sonic_joint_pos.csv": [
+        106,
+        29
+      ],
+      "sonic_joint_vel.csv": [
+        106,
+        29
+      ],
+      "sonic_body_pos.csv": [
+        106,
+        42
+      ],
+      "sonic_body_quat.csv": [
+        106,
+        56
+      ],
+      "sonic_body_lin_vel.csv": [
+        106,
+        42
+      ],
+      "sonic_body_ang_vel.csv": [
+        106,
+        42
+      ]
+    }
+  },
+  "byte_identical_to_prior_run": {
+    "audio/features/EL6yyP9_AZg_00059_0_53_music.audio29_30fps.pkl": true,
+    "audio/bvh/EL6yyP9_AZg_00059_0_53_music.bvh": true,
+    "robot/EL6yyP9_AZg_00059_0_53_music_unitree_g1_headless.pkl": true,
+    "sonic/EL6yyP9_AZg_00059_0_53_music_unitree_g1_headless/joint_pos.csv": true,
+    "sonic/EL6yyP9_AZg_00059_0_53_music_unitree_g1_headless/joint_vel.csv": true,
+    "sonic/EL6yyP9_AZg_00059_0_53_music_unitree_g1_headless/body_pos.csv": true,
+    "sonic/EL6yyP9_AZg_00059_0_53_music_unitree_g1_headless/body_quat.csv": true,
+    "sonic/EL6yyP9_AZg_00059_0_53_music_unitree_g1_headless/body_lin_vel.csv": true,
+    "sonic/EL6yyP9_AZg_00059_0_53_music_unitree_g1_headless/body_ang_vel.csv": true
+  },
+  "stage_returncodes": [
+    0,
+    0,
+    0
+  ],
+  "clean_environment_install_tested": false
+}

@@ -1,0 +1,7 @@
+# MotionCraft——公开参考版
+
+**仅供参考。** 本目录当前提供流水线编排脚本和合成示例，不附带上游项目源码、预训练权重、人体模型或机器人资产。历史验证依赖仓库外或未公开的文件，不能仅凭当前公开文件复现。
+
+下载[参考压缩包](source/MotionCraft-reference-20261006.tar.gz)，用相邻的 [SHA256 文件](source/MotionCraft-reference-20261006.tar.gz.sha256)核对。请先读[公开范围](PUBLIC_SCOPE.md)，再从[上游项目](https://github.com/cure-lab/MotionCraft)按其许可自行取得所需文件。旧版详细教程记录历史流程；其中指向已排除文件的命令仅作说明。
+
+SHA256 只检查传输完整性，不证明环境安装、动作质量、实机安全或再分发权限。

@@ -1,0 +1,50 @@
+[
+  {
+    "path": "GMR/general_motion_retargeting/utils/smpl.py",
+    "sha256": "646fd459e25405853cbdf3103fadc1b8bdcdab4e4c2109d80316d267bffe60a8",
+    "identical_to_10_sample_run": true,
+    "difference": null
+  },
+  {
+    "path": "GMR/scripts/convert_bvh_to_smplx.py",
+    "sha256": "aeb8e5a0e93af01f6866f78308bc9a21206c1151e526a1fda9e15439d0c6f64c",
+    "identical_to_10_sample_run": false,
+    "difference": "Only private default input paths / required input arguments; numerical computation unchanged"
+  },
+  {
+    "path": "GMR/scripts/smplx_to_robot.py",
+    "sha256": "379bf4cf911672393a2e58d9f29489b8ee11d6f560dd5d44da7c853015087d2b",
+    "identical_to_10_sample_run": false,
+    "difference": "Only private default input paths / required input arguments; numerical computation unchanged"
+  },
+  {
+    "path": "LDA/synthesize.py",
+    "sha256": "c30e84380531a4bc958692f2e8b37725adfddf13ee91d86f7258e116d7160e4c",
+    "identical_to_10_sample_run": true,
+    "difference": null
+  },
+  {
+    "path": "LDA/utils/audio_dir_to_bvh.py",
+    "sha256": "8454b2940e04ac9e0172da94e9ab26ecd3455e40f2173d5ded1f4a6adf9c2a5e",
+    "identical_to_10_sample_run": true,
+    "difference": null
+  },
+  {
+    "path": "LDA/utils/batch_lda_bvh_to_robot.py",
+    "sha256": "4df3d12ed754834213d4a3ed15cf39c5a32ed8c6ef31e011ccfe0800a73f4208",
+    "identical_to_10_sample_run": true,
+    "difference": null
+  },
+  {
+    "path": "LDA/utils/gmr_pkl_to_sonic_folder.py",
+    "sha256": "8ef8d28c2c65fba0c20075376b0dd06c8ad5a306c570ae9db8d3df86bbdb8256",
+    "identical_to_10_sample_run": true,
+    "difference": null
+  },
+  {
+    "path": "LDA/utils/wav_to_audio29_pkl.py",
+    "sha256": "74f726880524f1cf65b17384cb1cb4dfeeab2236e427194588fcbb1ff4ff4b56",
+    "identical_to_10_sample_run": true,
+    "difference": null
+  }
+]
