@@ -2,7 +2,7 @@
   "use strict";
   const csvConstraints = new Set(["speed", "amplitude", "direction", "trajectory", "body_restrain"]);
   const videoConstraints = new Set(["order", "times"]);
-  const csvDemoSlots = Object.freeze({
+  const csvFileNames = Object.freeze({
     jointPos: "joint_pos.csv",
     bodyPos: "body_pos.csv",
     bodyQuat: "body_quat.csv"
@@ -10,53 +10,6 @@
 
   class EvaluationError extends Error {
     constructor(code, message) { super(message); this.name = "EvaluationError"; this.code = code; }
-  }
-
-  function sameSiteAssetUrl(value) {
-    let assetUrl;
-    try { assetUrl = new URL(value, document.baseURI); }
-    catch { throw new EvaluationError("DEMO_UNAVAILABLE", "This example asset URL is invalid."); }
-    if (assetUrl.origin !== new URL(document.baseURI).origin || !["http:", "https:"].includes(assetUrl.protocol)) {
-      throw new EvaluationError("DEMO_UNAVAILABLE", "Example assets must be hosted on this website.");
-    }
-    return assetUrl;
-  }
-
-  async function fetchDemoFile(value, filename) {
-    const assetUrl = sameSiteAssetUrl(value);
-    let response;
-    try { response = await fetch(assetUrl.href); }
-    catch { throw new EvaluationError("DEMO_UNAVAILABLE", "The example asset could not be loaded."); }
-    if (!response.ok) throw new EvaluationError("DEMO_UNAVAILABLE", "The example asset could not be loaded.");
-    const blob = await response.blob();
-    return new File([blob], filename || assetUrl.pathname.split("/").pop(), { type: blob.type });
-  }
-
-  async function loadDemo(constraint) {
-    const csv = csvConstraints.has(constraint);
-    if (!csv && !videoConstraints.has(constraint)) {
-      throw new EvaluationError("INVALID_CONSTRAINT", "Choose a valid constraint.");
-    }
-    const demo = window.ROBOOSTEER_EVALUATION_CONFIG?.demos?.[constraint];
-    if (!demo?.taskId?.trim()) throw new EvaluationError("DEMO_UNAVAILABLE", "This example is not configured yet.");
-
-    if (csv) {
-      const urls = demo.csvAssetUrls;
-      if (!urls || Object.keys(csvDemoSlots).some(slot => !urls[slot]?.trim())) {
-        throw new EvaluationError("DEMO_UNAVAILABLE", "A complete three-file example is not configured yet.");
-      }
-      const entries = await Promise.all(Object.entries(csvDemoSlots).map(async ([slot, filename]) => {
-        const file = await fetchDemoFile(urls[slot], filename);
-        return [slot, file];
-      }));
-      return { taskId: demo.taskId.trim(), files: Object.fromEntries(entries) };
-    }
-
-    if (!demo.videoAssetUrl?.trim()) throw new EvaluationError("DEMO_UNAVAILABLE", "This example is not configured yet.");
-    return {
-      taskId: demo.taskId.trim(),
-      file: await fetchDemoFile(demo.videoAssetUrl)
-    };
   }
 
   function normalizeBaseUrl(value) {
@@ -85,9 +38,9 @@
   }
 
   function requireCsvFiles(files) {
-    const missing = Object.keys(csvDemoSlots).filter(slot => !files?.[slot]);
+    const missing = Object.keys(csvFileNames).filter(slot => !files?.[slot]);
     if (missing.length) {
-      const names = missing.map(slot => csvDemoSlots[slot]);
+      const names = missing.map(slot => csvFileNames[slot]);
       throw new EvaluationError("INVALID_INPUT", `Choose ${names.join(", ")}.`);
     }
   }
@@ -167,7 +120,6 @@
 
   window.RoboSteerEvaluationService = Object.freeze({
     EvaluationError,
-    loadDemo,
     normalizeBaseUrl,
     evaluateCsv: fields => request("csv", fields),
     evaluateVideo: fields => request("video", fields)

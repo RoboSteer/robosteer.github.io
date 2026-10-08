@@ -236,7 +236,7 @@
               <div class="eval-field"><label class="eval-label" for="csv-constraint-select">Target Constraint</label><select id="csv-constraint-select" class="eval-select" name="constraint"><option value="">Choose a constraint</option><option value="speed">Speed</option><option value="amplitude">Amplitude</option><option value="direction">Direction</option><option value="trajectory">Trajectory</option><option value="body_restrain">Body Restrain</option></select></div>
               <div class="eval-field"><label class="eval-label" for="csv-task-id">Task ID</label><input id="csv-task-id" name="task_id" class="eval-input" type="text" autocomplete="off" spellcheck="false" placeholder="Enter RoboSteer Task ID"><span class="field-hint">Identifies the benchmark task and reference for this sample.</span></div>
               <div class="eval-field eval-upload-group">
-                <div class="eval-file-heading"><span class="eval-label">Generated motion files</span><button type="button" class="btn-demo-link" id="csv-demo-btn" disabled>Try a Demo</button></div>
+                <span class="eval-label">Generated motion files</span>
                 <p class="eval-upload-intro">Upload three CSV files from the same generated motion sample: <code>joint_pos.csv</code>, <code>body_pos.csv</code>, and <code>body_quat.csv</code>.</p>
                 <div class="csv-upload-list">
                   <section class="csv-upload-slot" aria-labelledby="csv-joint-pos-label">
@@ -258,7 +258,6 @@
                     <span class="field-hint file-slot-note" id="csv-body-quat-file-note">The upload slot determines this file's meaning.</span>
                   </section>
                 </div>
-                <span class="field-hint" id="csv-demo-note">Choose a constraint to check example availability.</span>
                 <p class="eval-contract-note">All five CSV constraints require the same three-file motion representation. Individual scores may use only part of it; authoritative column, numeric, quaternion, and shared-frame validation remains on the evaluation backend. The browser does not calculate IR₂.</p>
               </div>
               <div class="eval-actions"><button type="submit" class="btn-eval" id="btn-eval-csv">Evaluate</button><button type="button" class="btn-reset" id="btn-reset-csv">Reset</button></div>
@@ -277,10 +276,9 @@
               <div class="eval-field"><label class="eval-label" for="vlm-base-url">Base URL</label><input type="url" id="vlm-base-url" class="eval-input" name="base_url" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="url" placeholder="https://example.com/v1"><span class="field-hint">Enter an API root, not a request path. It must be reachable from the evaluation backend; this webpage never calls your model service directly. HTTPS is required on the published site.</span></div>
               <div class="eval-field"><label class="eval-label" for="vlm-api-key">API Key</label><input type="password" id="vlm-api-key" class="eval-input" name="api_key" autocomplete="off" autocapitalize="off" spellcheck="false" required><span class="field-hint">Required for every provider in this version and used only for this request. It is never stored by the webpage.</span></div>
               <div class="eval-field">
-                <div class="eval-file-heading"><label class="eval-label" for="vlm-file-input">Model output video</label><button type="button" class="btn-demo-link" id="vlm-demo-btn" disabled>Try a Demo</button></div>
+                <label class="eval-label" for="vlm-file-input">Model output video</label>
                 <div class="eval-dropzone" id="vlm-dropzone" tabindex="0" role="button" aria-label="Upload video file"><input type="file" id="vlm-file-input" class="dropzone-input" tabindex="-1" aria-hidden="true"><div class="dropzone-content"><span class="dropzone-icon" aria-hidden="true">🎬</span><span class="dropzone-text" id="vlm-file-name">Click or drop a video file here</span><span class="dropzone-sub" id="vlm-file-types">One sample · Video</span></div></div>
                 <div class="eval-file-actions" id="vlm-file-actions" hidden><button type="button" id="vlm-replace">Replace</button><button type="button" id="vlm-remove">Remove</button></div>
-                <span class="field-hint" id="vlm-demo-note">Choose a constraint to check example availability.</span>
               </div>
               <div class="eval-actions"><button type="submit" class="btn-eval" id="btn-eval-vlm">Evaluate</button><button type="button" class="btn-reset" id="btn-reset-vlm">Reset</button></div>
             </form>

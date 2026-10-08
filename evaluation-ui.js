@@ -38,7 +38,7 @@
     const content = document.createElement("div");
     content.className = "result-placeholder";
     const heading = document.createElement("h4");
-    heading.textContent = name === "idle" ? "Evaluation Output" : name === "file-selected" ? "Files selected" : name === "validating" ? "Checking input" : name === "demo-loading" ? "Loading example…" : name === "evaluating" ? "Evaluating…" : name === "invalid-input" ? "Check your input" : "Evaluation unavailable";
+    heading.textContent = name === "idle" ? "Evaluation Output" : name === "file-selected" ? "Files selected" : name === "validating" ? "Checking input" : name === "evaluating" ? "Evaluating…" : name === "invalid-input" ? "Check your input" : "Evaluation unavailable";
     const text = document.createElement("p");
     text.textContent = message;
     content.append(heading, text);
@@ -101,36 +101,12 @@
       panel(other).hidden = !active;
       panel(other).classList.toggle("active", active);
     }
-    updateDemoButton(type);
   }
 
   function syncConstraintButtons(selected) {
     byId("eval-constraint-picker").querySelectorAll("button").forEach(button => {
       button.setAttribute("aria-pressed", String(button.dataset.constraint === selected));
     });
-  }
-
-  function csvDemoAvailable(demo) {
-    const urls = demo?.csvAssetUrls;
-    return Boolean(demo?.taskId?.trim() && urls && Object.keys(csvSlots).every(slot => urls[slot]?.trim()));
-  }
-
-  function videoDemoAvailable(demo) {
-    return Boolean(demo?.taskId?.trim() && demo?.videoAssetUrl?.trim());
-  }
-
-  function updateDemoButton(type) {
-    const constraint = byId(`${type}-constraint-select`).value;
-    const demo = config.demos?.[constraint];
-    const available = type === "csv" ? csvDemoAvailable(demo) : videoDemoAvailable(demo);
-    byId(`${type}-demo-btn`).disabled = state[type].busy || !available;
-    byId(`${type}-demo-note`).textContent = !constraint
-      ? "Choose a constraint to check example availability."
-      : available
-        ? "Use a complete website example with its benchmark Task ID."
-        : type === "csv"
-          ? "No complete three-file example is configured yet. You can upload your own output."
-          : "Example not configured yet. You can upload your own output.";
   }
 
   const configFileType = type => config.fileTypes[type === "csv" ? "csv" : "video"];
@@ -243,7 +219,6 @@
     byId(`${type}-constraint-select`).value = preserveConstraint;
     state[type].constraint = preserveConstraint;
     if (announce) status(type, "idle", idleMessage(type));
-    updateDemoButton(type);
   }
 
   function clearForConstraint(type, value) {
@@ -318,38 +293,6 @@
     for (const item of ["csv", "vlm"]) tab(item).disabled = busy;
     byId(`btn-eval-${type}`).textContent = busy ? label : "Evaluate";
     resultBox(type).setAttribute("aria-busy", String(busy));
-    if (!busy) updateDemoButton(type);
-  }
-
-  async function prepareDemo(type) {
-    if (state[type].busy) return;
-    const constraint = byId(`${type}-constraint-select`).value;
-    resetType(type, { preserveConstraint: constraint, announce: false });
-    setBusy(type, true, "Loading example…");
-    status(type, "demo-loading", "Loading the website example…");
-    try {
-      const demo = await service.loadDemo(constraint);
-      byId(`${type}-task-id`).value = demo.taskId;
-      if (type === "csv") {
-        for (const slot of Object.keys(csvSlots)) {
-          const error = validFile("csv", demo.files?.[slot]);
-          if (error) throw new service.EvaluationError("INVALID_INPUT", `${csvSlots[slot].expectedName}: ${error}`);
-          setCsvFile(slot, demo.files[slot], { silent: true });
-        }
-      } else {
-        const error = validFile("vlm", demo.file);
-        if (error) throw new service.EvaluationError("INVALID_INPUT", error);
-        setVideoFile(demo.file, { silent: true });
-      }
-      status(type, "file-selected", "Example loaded. Click Evaluate to run the real backend evaluation.");
-    } catch (caught) {
-      clearUploads(type);
-      byId(`${type}-task-id`).value = "";
-      if (type === "vlm") byId("vlm-api-key").value = "";
-      status(type, "backend-error", caught instanceof service.EvaluationError ? caught.message : "The example asset could not be loaded.");
-    } finally {
-      setBusy(type, false);
-    }
   }
 
   function validateCsvFiles() {
@@ -433,10 +376,8 @@
       const value = event.target.value;
       if (value !== state[type].constraint) clearForConstraint(type, value);
       else syncConstraintButtons(value);
-      updateDemoButton(type);
     });
     byId(`${type}-task-id`).addEventListener("input", () => clearStaleResult(type));
-    byId(`${type}-demo-btn`).addEventListener("click", () => prepareDemo(type));
   }
 
   byId("vlm-provider-select").addEventListener("change", () => { updateProviderRequirements(); clearStaleResult("vlm"); });

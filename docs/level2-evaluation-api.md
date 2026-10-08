@@ -66,25 +66,6 @@ The existing local `scripts/level2/evaluate_order.py` and `evaluate_times.py` us
 
 `evaluation-config.js` accepts `.csv` for each CSV slot and `.mp4`, `.webm`, or `.mov` for video. `maxFileBytes` is `null` until an agreed upload limit is available. Coordinate actual codec support and any size limit with the backend before launch.
 
-## Website examples
-
-CSV demo configuration uses a Task ID plus three explicitly named same-site assets:
-
-```js
-speed: {
-  taskId: "task_xxx",
-  csvAssetUrls: {
-    jointPos: "assets/evaluation/speed/joint_pos.csv",
-    bodyPos: "assets/evaluation/speed/body_pos.csv",
-    bodyQuat: "assets/evaluation/speed/body_quat.csv"
-  }
-}
-```
-
-The **Try a Demo** button remains disabled unless the Task ID and all three asset paths are present. Clicking it loads all three files into their matching slots at once. Never use placeholder files as scoring inputs.
-
-Video demo configuration uses `{ taskId, videoAssetUrl }`. A video example still requires the user to provide Provider, Model Name, optional Base URL, and API Key. All demo assets must share the website origin. The demo path uses the real backend endpoint; there is no mock scoring path.
-
 ## Responses
 
 Successful JSON response (HTTP 2xx):
