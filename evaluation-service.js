@@ -12,6 +12,12 @@
     constructor(code, message) { super(message); this.name = "EvaluationError"; this.code = code; }
   }
 
+  function backendUrl() {
+    const value = window.ROBOOSTEER_EVALUATION_CONFIG?.BACKEND_URL?.trim().replace(/\/+$/, "");
+    if (!value) throw new EvaluationError("BACKEND_UNAVAILABLE", "Evaluation backend is not connected yet.");
+    return value;
+  }
+
   function normalizeBaseUrl(value) {
     const raw = value?.trim() || "";
     if (!raw) return "";
@@ -46,10 +52,84 @@
   }
 
   function safeBackendMessage(raw, apiKey, fallback) {
-    return apiKey && raw.includes(apiKey) ? fallback : raw;
+    if (typeof raw !== "string") return fallback;
+    const message = raw.trim();
+    const looksSensitive = (apiKey && message.includes(apiKey))
+      || message.length > 600
+      || /(?:^|\n)\s*(?:at\s+|traceback\b|file\s+["'])/i.test(message)
+      || /(?:^|[\s"'(])\/(?:home|root|srv|var|opt|tmp|workspace)\//i.test(message)
+      || /\b[A-Z]:\\(?:Users|Windows|Program Files)\\/i.test(message);
+    return !message || looksSensitive ? fallback : message;
   }
 
-  async function request(kind, { taskId, constraint, files, file, provider, apiKey, baseUrl, modelName }) {
+  async function readJson(response, fallbackMessage) {
+    try { return await response.json(); }
+    catch { throw new EvaluationError("INVALID_RESPONSE", fallbackMessage); }
+  }
+
+  async function handleEvaluationResponse(response, fallback, apiKey = "") {
+    const data = await readJson(response, "Evaluation service returned an unreadable response.");
+    if (!response.ok || data?.success === false) {
+      const fallbackMessage = "Evaluation failed. Please try again.";
+      const raw = typeof data?.error?.message === "string" ? data.error.message : fallbackMessage;
+      throw new EvaluationError(data?.error?.code || "BACKEND_ERROR", safeBackendMessage(raw, apiKey, fallbackMessage));
+    }
+    if (data?.success !== true || !data.result || typeof data.result !== "object" || Array.isArray(data.result)) {
+      throw new EvaluationError("INVALID_RESPONSE", "Evaluation service returned an unexpected result.");
+    }
+    const result = data.result;
+    if (result.satisfied != null && typeof result.satisfied !== "boolean") throw new EvaluationError("INVALID_RESPONSE", "Evaluation service returned an unexpected result.");
+    if (result.score != null && (typeof result.score !== "number" || !Number.isFinite(result.score))) throw new EvaluationError("INVALID_RESPONSE", "Evaluation service returned an unexpected result.");
+    if (result.message != null && typeof result.message !== "string") throw new EvaluationError("INVALID_RESPONSE", "Evaluation service returned an unexpected result.");
+    const safeMessage = result.message ? safeBackendMessage(result.message, apiKey, "Evaluation completed.") : result.message;
+    return {
+      taskId: typeof data.task_id === "string" ? data.task_id : fallback.taskId,
+      constraint: typeof data.constraint === "string" ? data.constraint : fallback.constraint,
+      result: { satisfied: result.satisfied, score: result.score, message: safeMessage }
+    };
+  }
+
+  async function fetchOfficialExamples() {
+    let response;
+    try { response = await fetch(`${backendUrl()}/api/level2/official-examples`); }
+    catch { throw new EvaluationError("BACKEND_UNAVAILABLE", "Official examples could not be loaded. The evaluation service may be unavailable."); }
+    const data = await readJson(response, "The official examples response could not be read.");
+    if (!response.ok || data?.success === false) {
+      const fallback = "Official examples could not be loaded.";
+      const message = safeBackendMessage(data?.error?.message, "", fallback);
+      throw new EvaluationError(data?.error?.code || "BACKEND_ERROR", message);
+    }
+    if (data?.success !== true || !Array.isArray(data.examples)) {
+      throw new EvaluationError("INVALID_RESPONSE", "The evaluation service returned an invalid official examples list.");
+    }
+    return data.examples.map(item => {
+      if (!item || typeof item.id !== "string" || !item.id.trim() || typeof item.constraint !== "string" || !item.constraint.trim()) {
+        throw new EvaluationError("INVALID_RESPONSE", "The evaluation service returned an invalid official example.");
+      }
+      return Object.freeze({
+        id: item.id.trim(),
+        constraint: item.constraint.trim(),
+        taskId: typeof item.task_id === "string" ? item.task_id.trim() : "",
+        displayName: typeof item.display_name === "string" ? item.display_name.trim() : "",
+        description: typeof item.description === "string" ? item.description.trim() : "",
+        steerInstruction: typeof item.steer_instruction === "string" ? item.steer_instruction.trim() : "",
+        evaluationType: typeof item.evaluation_type === "string" ? item.evaluation_type.trim() : ""
+      });
+    });
+  }
+
+  async function evaluateOfficialExample(example) {
+    if (!example?.id) throw new EvaluationError("EXAMPLE_UNAVAILABLE", "No official example is available for this constraint.");
+    let response;
+    try {
+      response = await fetch(`${backendUrl()}/api/level2/official-examples/${encodeURIComponent(example.id)}/evaluate`, { method: "POST" });
+    } catch {
+      throw new EvaluationError("BACKEND_UNAVAILABLE", "Evaluation service is unreachable. Please try again later.");
+    }
+    return handleEvaluationResponse(response, { taskId: example.taskId, constraint: example.constraint });
+  }
+
+  async function requestCustom(kind, { taskId, constraint, files, file, provider, apiKey, baseUrl, modelName }) {
     const allowed = kind === "csv" ? csvConstraints : videoConstraints;
     const requestApiKey = apiKey?.trim() || "";
     if (!allowed.has(constraint)) throw new EvaluationError("INVALID_CONSTRAINT", "Choose a valid constraint.");
@@ -70,9 +150,6 @@
       }
     }
 
-    const base = window.ROBOOSTEER_EVALUATION_CONFIG?.BACKEND_URL?.trim().replace(/\/+$/, "");
-    if (!base) throw new EvaluationError("BACKEND_UNAVAILABLE", "Evaluation backend is not connected yet.");
-
     const body = new FormData();
     body.append("task_id", taskId.trim());
     body.append("constraint", constraint);
@@ -89,39 +166,17 @@
     }
 
     let response;
-    try {
-      response = await fetch(`${base}/api/level2/evaluate/${kind}`, { method: "POST", body });
-    } catch {
-      throw new EvaluationError("BACKEND_UNAVAILABLE", "Evaluation service is unreachable. Please try again later.");
-    }
-    let data;
-    try { data = await response.json(); }
-    catch { throw new EvaluationError("INVALID_RESPONSE", "Evaluation service returned an unreadable response."); }
-
-    if (!response.ok || data?.success === false) {
-      const fallback = "Evaluation failed. Please try again.";
-      const raw = typeof data?.error?.message === "string" ? data.error.message : fallback;
-      throw new EvaluationError(data?.error?.code || "BACKEND_ERROR", safeBackendMessage(raw, requestApiKey, fallback));
-    }
-    if (data?.success !== true || !data.result || typeof data.result !== "object" || Array.isArray(data.result)) {
-      throw new EvaluationError("INVALID_RESPONSE", "Evaluation service returned an unexpected result.");
-    }
-    const result = data.result;
-    if (result.satisfied != null && typeof result.satisfied !== "boolean") throw new EvaluationError("INVALID_RESPONSE", "Evaluation service returned an unexpected result.");
-    if (result.score != null && (typeof result.score !== "number" || !Number.isFinite(result.score))) throw new EvaluationError("INVALID_RESPONSE", "Evaluation service returned an unexpected result.");
-    if (result.message != null && typeof result.message !== "string") throw new EvaluationError("INVALID_RESPONSE", "Evaluation service returned an unexpected result.");
-    const safeMessage = result.message ? safeBackendMessage(result.message, requestApiKey, "Evaluation completed.") : result.message;
-    return {
-      taskId: typeof data.task_id === "string" ? data.task_id : taskId.trim(),
-      constraint: typeof data.constraint === "string" ? data.constraint : constraint,
-      result: { satisfied: result.satisfied, score: result.score, message: safeMessage }
-    };
+    try { response = await fetch(`${backendUrl()}/api/level2/evaluate/${kind}`, { method: "POST", body }); }
+    catch { throw new EvaluationError("BACKEND_UNAVAILABLE", "Evaluation service is unreachable. Please try again later."); }
+    return handleEvaluationResponse(response, { taskId: taskId.trim(), constraint }, requestApiKey);
   }
 
   window.RoboSteerEvaluationService = Object.freeze({
     EvaluationError,
+    fetchOfficialExamples,
+    evaluateOfficialExample,
     normalizeBaseUrl,
-    evaluateCsv: fields => request("csv", fields),
-    evaluateVideo: fields => request("video", fields)
+    evaluateCsv: fields => requestCustom("csv", fields),
+    evaluateVideo: fields => requestCustom("video", fields)
   });
 })();

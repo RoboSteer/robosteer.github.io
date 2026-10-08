@@ -6,7 +6,7 @@ Static website for https://robosteer.github.io/ . The website repository is `Rob
 
 ## Level 2 Evaluation integration
 
-The homepage's Level 2 Evaluation section submits one model output and a benchmark Task ID. Set `BACKEND_URL` and the supported VLM providers in `evaluation-config.js` when the separate evaluation service is available. Each constraint also has an optional `demos` entry with a real Task ID and a same-site CSV/video asset path. `Try a Demo` stays disabled until both are configured; it then loads that example into the same form and submits through the same backend adapter as a user upload. With an empty backend URL, the page reports that evaluation is unavailable and does not generate simulated results. The request and response contract for the backend is in `docs/level2-evaluation-api.md`.
+The homepage's Level 2 evaluator starts with server-hosted official examples and provides **Use Your Own Case** to enter the original CSV/video upload flow. Official example IDs and public metadata come from the backend at runtime; official files and VLM credentials never enter the static site. The separate evaluation service URL is configured only as `BACKEND_URL` in `evaluation-config.js`. With an empty or unavailable backend, the page reports the failure, offers Retry, and keeps custom uploads available without generating simulated results. The request and response contract is in `docs/level2-evaluation-api.md`.
 
 ## Preview locally
 

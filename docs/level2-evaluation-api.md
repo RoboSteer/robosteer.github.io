@@ -1,14 +1,30 @@
 # Level 2 Evaluation API contract
 
-> **Integration status:** this document describes the frontend contract implemented by the static website. The evaluation backend has **not yet been adapted** to accept the new three-file CSV payload or the user-selected VLM provider settings. Do not represent these requests as supported by a live service until the next backend phase implements and verifies the same contract.
+The static homepage at `https://robosteer.github.io/` calls a separate RoboSteer evaluation backend. Configure that service's HTTPS base URL only in `evaluation-config.js` as `BACKEND_URL` (no trailing slash needed). The current URL is a temporary Cloudflare Quick Tunnel and must be replaced there when a stable domain is available. A user-provided VLM `base_url` is a different value and must never be assigned to `BACKEND_URL`.
 
-The static homepage at `https://robosteer.github.io/` calls a separate RoboSteer evaluation backend. Configure that service's HTTPS base URL in `evaluation-config.js` as `BACKEND_URL` (no trailing slash needed). A user-provided VLM `base_url` is a different value: it identifies the model service that the evaluation backend should call and must never be assigned to `BACKEND_URL`.
+The frontend has two explicit internal modes. It starts in `official` mode and changes to `custom` only when the user selects **Use Your Own Case**. Mode is never inferred from whether an input is empty.
 
-Both evaluation routes use `multipart/form-data`. The browser sets the boundary and `Content-Type` automatically.
+## Official examples
+
+On initialization, the frontend requests:
+
+`GET {BACKEND_URL}/api/level2/official-examples`
+
+It uses the returned `examples` array as the only source of official example IDs and matches examples to the seven visible constraints through a centralized normalization function. The public fields used by the page are `id`, `constraint`, `task_id`, `display_name`, `description`, `steer_instruction`, and `evaluation_type`.
+
+Evaluating the selected official example sends:
+
+`POST {BACKEND_URL}/api/level2/official-examples/{example_id}/evaluate`
+
+This request has no body and does not send Task ID, files, provider settings, model information, Base URL, API Key, or an unnecessary `Content-Type` header. CSV and video assets remain on the server. Official Order and Times credentials are held entirely by the backend; the frontend contains only explanatory display text and no official secret.
+
+If loading the list fails, the page displays a retry action and keeps the custom upload path available. An official evaluation cannot be submitted without an example ID returned by the list endpoint.
+
+## User-provided evaluations
+
+Both custom evaluation routes use `multipart/form-data`. The browser sets the boundary and `Content-Type` automatically.
 
 ## CSV evaluation
-
-Proposed route for the next backend phase:
 
 `POST {BACKEND_URL}/api/level2/evaluate/csv`
 
@@ -39,8 +55,6 @@ All five CSV constraints require the unified three-file sample even though each 
 Task metadata, reference motion, and other server-side resources may also be required.
 
 ## Video + VLM evaluation
-
-Proposed route for the next backend phase:
 
 `POST {BACKEND_URL}/api/level2/evaluate/video`
 

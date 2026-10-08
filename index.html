@@ -12,12 +12,12 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/fonts/fonts.css">
   <link rel="stylesheet" href="tokens.css">
-  <link rel="stylesheet" href="styles.css?v=level2-layout-20261008">
+  <link rel="stylesheet" href="styles.css?v=official-examples-20261008">
   <script src="site-content.js?v=hf-resources-20261003" defer></script>
   <script src="script.js?v=hf-buttons-20261003" defer></script>
-  <script src="evaluation-config.js?v=level2-20261004-2" defer></script>
-  <script src="evaluation-service.js?v=level2-20261004-2" defer></script>
-  <script src="evaluation-ui.js?v=level2-20261004-2" defer></script>
+  <script src="evaluation-config.js?v=official-examples-20261008" defer></script>
+  <script src="evaluation-service.js?v=official-examples-20261008" defer></script>
+  <script src="evaluation-ui.js?v=official-examples-20261008" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#paper">Skip to project information</a>
@@ -234,33 +234,51 @@
           <div class="eval-grid">
             <form class="eval-form" id="csv-evaluation-form" novalidate>
               <div class="eval-field"><label class="eval-label" for="csv-constraint-select">Target Constraint</label><select id="csv-constraint-select" class="eval-select" name="constraint"><option value="">Choose a constraint</option><option value="speed">Speed</option><option value="amplitude">Amplitude</option><option value="direction">Direction</option><option value="trajectory">Trajectory</option><option value="body_restrain">Body Restrain</option></select></div>
-              <div class="eval-field"><label class="eval-label" for="csv-task-id">Task ID</label><input id="csv-task-id" name="task_id" class="eval-input" type="text" autocomplete="off" spellcheck="false" placeholder="Enter RoboSteer Task ID"><span class="field-hint">Identifies the benchmark task and reference for this sample.</span></div>
-              <div class="eval-field eval-upload-group">
-                <span class="eval-label">Generated motion files</span>
-                <p class="eval-upload-intro">Upload three CSV files from the same generated motion sample: <code>joint_pos.csv</code>, <code>body_pos.csv</code>, and <code>body_quat.csv</code>.</p>
-                <div class="csv-upload-list">
-                  <section class="csv-upload-slot" aria-labelledby="csv-joint-pos-label">
-                    <label class="eval-label" id="csv-joint-pos-label" for="csv-joint-pos-file-input">Joint positions · <code>joint_pos.csv</code></label>
-                    <div class="eval-dropzone" id="csv-joint-pos-dropzone" tabindex="0" role="button" aria-label="Upload joint_pos.csv"><input type="file" id="csv-joint-pos-file-input" class="dropzone-input" tabindex="-1" aria-hidden="true"><div class="dropzone-content"><span class="dropzone-icon" aria-hidden="true">📊</span><span class="dropzone-text" id="csv-joint-pos-file-name">Click or drop joint_pos.csv here</span><span class="dropzone-sub">29 joint-position columns</span></div></div>
-                    <div class="eval-file-actions" id="csv-joint-pos-file-actions" hidden><button type="button" id="csv-joint-pos-replace">Replace</button><button type="button" id="csv-joint-pos-remove">Remove</button></div>
-                    <span class="field-hint file-slot-note" id="csv-joint-pos-file-note">The upload slot determines this file's meaning.</span>
-                  </section>
-                  <section class="csv-upload-slot" aria-labelledby="csv-body-pos-label">
-                    <label class="eval-label" id="csv-body-pos-label" for="csv-body-pos-file-input">Root position · <code>body_pos.csv</code></label>
-                    <div class="eval-dropzone" id="csv-body-pos-dropzone" tabindex="0" role="button" aria-label="Upload body_pos.csv"><input type="file" id="csv-body-pos-file-input" class="dropzone-input" tabindex="-1" aria-hidden="true"><div class="dropzone-content"><span class="dropzone-icon" aria-hidden="true">📍</span><span class="dropzone-text" id="csv-body-pos-file-name">Click or drop body_pos.csv here</span><span class="dropzone-sub">Root position x, y, z</span></div></div>
-                    <div class="eval-file-actions" id="csv-body-pos-file-actions" hidden><button type="button" id="csv-body-pos-replace">Replace</button><button type="button" id="csv-body-pos-remove">Remove</button></div>
-                    <span class="field-hint file-slot-note" id="csv-body-pos-file-note">The upload slot determines this file's meaning.</span>
-                  </section>
-                  <section class="csv-upload-slot" aria-labelledby="csv-body-quat-label">
-                    <label class="eval-label" id="csv-body-quat-label" for="csv-body-quat-file-input">Root orientation · <code>body_quat.csv</code></label>
-                    <div class="eval-dropzone" id="csv-body-quat-dropzone" tabindex="0" role="button" aria-label="Upload body_quat.csv"><input type="file" id="csv-body-quat-file-input" class="dropzone-input" tabindex="-1" aria-hidden="true"><div class="dropzone-content"><span class="dropzone-icon" aria-hidden="true">🧭</span><span class="dropzone-text" id="csv-body-quat-file-name">Click or drop body_quat.csv here</span><span class="dropzone-sub">Root quaternion w, x, y, z</span></div></div>
-                    <div class="eval-file-actions" id="csv-body-quat-file-actions" hidden><button type="button" id="csv-body-quat-replace">Replace</button><button type="button" id="csv-body-quat-remove">Remove</button></div>
-                    <span class="field-hint file-slot-note" id="csv-body-quat-file-note">The upload slot determines this file's meaning.</span>
-                  </section>
+              <div class="official-example" id="csv-official-example" data-mode-section="official">
+                <div class="official-example-state" id="csv-official-state" data-state="loading" role="status">
+                  <p id="csv-official-state-message">Loading the official example…</p>
+                  <button type="button" class="btn-retry" id="csv-official-retry" hidden>Retry</button>
                 </div>
-                <p class="eval-contract-note">All five CSV constraints require the same three-file motion representation. Individual scores may use only part of it; authoritative column, numeric, quaternion, and shared-frame validation remains on the evaluation backend. The browser does not calculate IR₂.</p>
+                <div class="official-example-content" id="csv-official-content" hidden>
+                  <div class="official-example-heading"><span class="official-example-badge">Official example</span><h3 id="csv-official-name"></h3></div>
+                  <div class="eval-field"><label class="eval-label" for="csv-official-task-id">Task ID</label><input id="csv-official-task-id" class="eval-input" type="text" readonly aria-readonly="true"></div>
+                  <dl class="official-example-meta">
+                    <div><dt>Description</dt><dd id="csv-official-description"></dd></div>
+                    <div><dt>Steer Instruction</dt><dd id="csv-official-instruction"></dd></div>
+                    <div><dt>Evaluation Type</dt><dd id="csv-official-type"></dd></div>
+                  </dl>
+                  <p class="official-asset-ready"><span aria-hidden="true">✓</span> Official CSV assets are ready on the server.</p>
+                </div>
               </div>
-              <div class="eval-actions"><button type="submit" class="btn-eval" id="btn-eval-csv">Evaluate</button><button type="button" class="btn-reset" id="btn-reset-csv">Reset</button></div>
+              <div class="eval-custom-fields" id="csv-custom-fields" data-mode-section="custom" hidden>
+                <div class="eval-field"><label class="eval-label" for="csv-task-id">Task ID</label><input id="csv-task-id" name="task_id" class="eval-input" type="text" autocomplete="off" spellcheck="false" placeholder="Enter RoboSteer Task ID"><span class="field-hint">Identifies the benchmark task and reference for this sample.</span></div>
+                <div class="eval-field eval-upload-group">
+                  <span class="eval-label">Generated motion files</span>
+                  <p class="eval-upload-intro">Upload three CSV files from the same generated motion sample: <code>joint_pos.csv</code>, <code>body_pos.csv</code>, and <code>body_quat.csv</code>.</p>
+                  <div class="csv-upload-list">
+                    <section class="csv-upload-slot" aria-labelledby="csv-joint-pos-label">
+                      <label class="eval-label" id="csv-joint-pos-label" for="csv-joint-pos-file-input">Joint positions · <code>joint_pos.csv</code></label>
+                      <div class="eval-dropzone" id="csv-joint-pos-dropzone" tabindex="0" role="button" aria-label="Upload joint_pos.csv"><input type="file" id="csv-joint-pos-file-input" class="dropzone-input" tabindex="-1" aria-hidden="true"><div class="dropzone-content"><span class="dropzone-icon" aria-hidden="true">📊</span><span class="dropzone-text" id="csv-joint-pos-file-name">Click or drop joint_pos.csv here</span><span class="dropzone-sub">29 joint-position columns</span></div></div>
+                      <div class="eval-file-actions" id="csv-joint-pos-file-actions" hidden><button type="button" id="csv-joint-pos-replace">Replace</button><button type="button" id="csv-joint-pos-remove">Remove</button></div>
+                      <span class="field-hint file-slot-note" id="csv-joint-pos-file-note">The upload slot determines this file's meaning.</span>
+                    </section>
+                    <section class="csv-upload-slot" aria-labelledby="csv-body-pos-label">
+                      <label class="eval-label" id="csv-body-pos-label" for="csv-body-pos-file-input">Root position · <code>body_pos.csv</code></label>
+                      <div class="eval-dropzone" id="csv-body-pos-dropzone" tabindex="0" role="button" aria-label="Upload body_pos.csv"><input type="file" id="csv-body-pos-file-input" class="dropzone-input" tabindex="-1" aria-hidden="true"><div class="dropzone-content"><span class="dropzone-icon" aria-hidden="true">📍</span><span class="dropzone-text" id="csv-body-pos-file-name">Click or drop body_pos.csv here</span><span class="dropzone-sub">Root position x, y, z</span></div></div>
+                      <div class="eval-file-actions" id="csv-body-pos-file-actions" hidden><button type="button" id="csv-body-pos-replace">Replace</button><button type="button" id="csv-body-pos-remove">Remove</button></div>
+                      <span class="field-hint file-slot-note" id="csv-body-pos-file-note">The upload slot determines this file's meaning.</span>
+                    </section>
+                    <section class="csv-upload-slot" aria-labelledby="csv-body-quat-label">
+                      <label class="eval-label" id="csv-body-quat-label" for="csv-body-quat-file-input">Root orientation · <code>body_quat.csv</code></label>
+                      <div class="eval-dropzone" id="csv-body-quat-dropzone" tabindex="0" role="button" aria-label="Upload body_quat.csv"><input type="file" id="csv-body-quat-file-input" class="dropzone-input" tabindex="-1" aria-hidden="true"><div class="dropzone-content"><span class="dropzone-icon" aria-hidden="true">🧭</span><span class="dropzone-text" id="csv-body-quat-file-name">Click or drop body_quat.csv here</span><span class="dropzone-sub">Root quaternion w, x, y, z</span></div></div>
+                      <div class="eval-file-actions" id="csv-body-quat-file-actions" hidden><button type="button" id="csv-body-quat-replace">Replace</button><button type="button" id="csv-body-quat-remove">Remove</button></div>
+                      <span class="field-hint file-slot-note" id="csv-body-quat-file-note">The upload slot determines this file's meaning.</span>
+                    </section>
+                  </div>
+                  <p class="eval-contract-note">All five CSV constraints require the same three-file motion representation. Individual scores may use only part of it; authoritative column, numeric, quaternion, and shared-frame validation remains on the evaluation backend. The browser does not calculate IR₂.</p>
+                </div>
+              </div>
+              <div class="eval-actions"><button type="submit" class="btn-eval" id="btn-eval-csv" disabled>Evaluate</button><button type="button" class="btn-mode-switch" id="btn-use-custom-csv">Use Your Own Case</button><button type="button" class="btn-mode-switch" id="btn-use-official-csv" hidden>Back to Official Example</button><button type="button" class="btn-reset" id="btn-reset-csv" hidden>Reset</button></div>
             </form>
             <div class="eval-result-card" id="csv-result-box" role="status" aria-live="polite"><div class="result-placeholder"><span class="placeholder-icon">📋</span><h4>Evaluation Output</h4><p>Choose a constraint, enter a Task ID, and upload all three CSV files.</p></div></div>
           </div>
@@ -270,17 +288,41 @@
           <div class="eval-grid">
             <form class="eval-form" id="vlm-evaluation-form" novalidate>
               <div class="eval-field"><label class="eval-label" for="vlm-constraint-select">Target Constraint</label><select id="vlm-constraint-select" class="eval-select" name="constraint"><option value="">Choose a constraint</option><option value="order">Order</option><option value="times">Times</option></select></div>
-              <div class="eval-field"><label class="eval-label" for="vlm-task-id">Task ID</label><input id="vlm-task-id" name="task_id" class="eval-input" type="text" autocomplete="off" spellcheck="false" placeholder="Enter RoboSteer Task ID"><span class="field-hint">Identifies the benchmark task and reference for this sample.</span></div>
-              <div class="eval-field"><label class="eval-label" for="vlm-provider-select">VLM Provider</label><select id="vlm-provider-select" class="eval-select" name="provider"><option value="">Choose a provider</option></select></div>
-              <div class="eval-field"><label class="eval-label" for="vlm-model-name">Model Name</label><input type="text" id="vlm-model-name" class="eval-input" name="model_name" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Enter the provider's model ID" required><span class="field-hint">Use the exact model ID recognized by the selected service.</span></div>
-              <div class="eval-field"><label class="eval-label" for="vlm-base-url">Base URL</label><input type="url" id="vlm-base-url" class="eval-input" name="base_url" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="url" placeholder="https://example.com/v1"><span class="field-hint">Enter an API root, not a request path. It must be reachable from the evaluation backend; this webpage never calls your model service directly. HTTPS is required on the published site.</span></div>
-              <div class="eval-field"><label class="eval-label" for="vlm-api-key">API Key</label><input type="password" id="vlm-api-key" class="eval-input" name="api_key" autocomplete="off" autocapitalize="off" spellcheck="false" required><span class="field-hint">Required for every provider in this version and used only for this request. It is never stored by the webpage.</span></div>
-              <div class="eval-field">
-                <label class="eval-label" for="vlm-file-input">Model output video</label>
-                <div class="eval-dropzone" id="vlm-dropzone" tabindex="0" role="button" aria-label="Upload video file"><input type="file" id="vlm-file-input" class="dropzone-input" tabindex="-1" aria-hidden="true"><div class="dropzone-content"><span class="dropzone-icon" aria-hidden="true">🎬</span><span class="dropzone-text" id="vlm-file-name">Click or drop a video file here</span><span class="dropzone-sub" id="vlm-file-types">One sample · Video</span></div></div>
-                <div class="eval-file-actions" id="vlm-file-actions" hidden><button type="button" id="vlm-replace">Replace</button><button type="button" id="vlm-remove">Remove</button></div>
+              <div class="official-example" id="vlm-official-example" data-mode-section="official">
+                <div class="official-example-state" id="vlm-official-state" data-state="loading" role="status">
+                  <p id="vlm-official-state-message">Loading the official example…</p>
+                  <button type="button" class="btn-retry" id="vlm-official-retry" hidden>Retry</button>
+                </div>
+                <div class="official-example-content" id="vlm-official-content" hidden>
+                  <div class="official-example-heading"><span class="official-example-badge">Official example</span><h3 id="vlm-official-name"></h3></div>
+                  <div class="eval-field"><label class="eval-label" for="vlm-official-task-id">Task ID</label><input id="vlm-official-task-id" class="eval-input" type="text" readonly aria-readonly="true"></div>
+                  <dl class="official-example-meta">
+                    <div><dt>Description</dt><dd id="vlm-official-description"></dd></div>
+                    <div><dt>Steer Instruction</dt><dd id="vlm-official-instruction"></dd></div>
+                    <div><dt>Evaluation Type</dt><dd id="vlm-official-type"></dd></div>
+                  </dl>
+                  <p class="official-asset-ready"><span aria-hidden="true">✓</span> Official video is ready on the server.</p>
+                  <dl class="official-vlm-config" aria-label="Official VLM configuration">
+                    <div><dt>Provider</dt><dd>OpenAI</dd></div>
+                    <div><dt>Model</dt><dd>gpt-5.6-sol</dd></div>
+                    <div><dt>Base URL</dt><dd>https://api.openlux.ai/v1</dd></div>
+                    <div><dt>API Key</dt><dd>Provided securely by the RoboSteer backend</dd></div>
+                  </dl>
+                </div>
               </div>
-              <div class="eval-actions"><button type="submit" class="btn-eval" id="btn-eval-vlm">Evaluate</button><button type="button" class="btn-reset" id="btn-reset-vlm">Reset</button></div>
+              <div class="eval-custom-fields" id="vlm-custom-fields" data-mode-section="custom" hidden>
+                <div class="eval-field"><label class="eval-label" for="vlm-task-id">Task ID</label><input id="vlm-task-id" name="task_id" class="eval-input" type="text" autocomplete="off" spellcheck="false" placeholder="Enter RoboSteer Task ID"><span class="field-hint">Identifies the benchmark task and reference for this sample.</span></div>
+                <div class="eval-field"><label class="eval-label" for="vlm-provider-select">VLM Provider</label><select id="vlm-provider-select" class="eval-select" name="provider"><option value="">Choose a provider</option></select></div>
+                <div class="eval-field"><label class="eval-label" for="vlm-model-name">Model Name</label><input type="text" id="vlm-model-name" class="eval-input" name="model_name" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Enter the provider's model ID" required><span class="field-hint">Use the exact model ID recognized by the selected service.</span></div>
+                <div class="eval-field"><label class="eval-label" for="vlm-base-url">Base URL</label><input type="url" id="vlm-base-url" class="eval-input" name="base_url" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="url" placeholder="https://example.com/v1"><span class="field-hint">Enter an API root, not a request path. It must be reachable from the evaluation backend; this webpage never calls your model service directly. HTTPS is required on the published site.</span></div>
+                <div class="eval-field"><label class="eval-label" for="vlm-api-key">API Key</label><input type="password" id="vlm-api-key" class="eval-input" name="api_key" autocomplete="off" autocapitalize="off" spellcheck="false" required><span class="field-hint">Required for every provider in this version and used only for this request. It is never stored by the webpage.</span></div>
+                <div class="eval-field">
+                  <label class="eval-label" for="vlm-file-input">Model output video</label>
+                  <div class="eval-dropzone" id="vlm-dropzone" tabindex="0" role="button" aria-label="Upload video file"><input type="file" id="vlm-file-input" class="dropzone-input" tabindex="-1" aria-hidden="true"><div class="dropzone-content"><span class="dropzone-icon" aria-hidden="true">🎬</span><span class="dropzone-text" id="vlm-file-name">Click or drop a video file here</span><span class="dropzone-sub" id="vlm-file-types">One sample · Video</span></div></div>
+                  <div class="eval-file-actions" id="vlm-file-actions" hidden><button type="button" id="vlm-replace">Replace</button><button type="button" id="vlm-remove">Remove</button></div>
+                </div>
+              </div>
+              <div class="eval-actions"><button type="submit" class="btn-eval" id="btn-eval-vlm" disabled>Evaluate</button><button type="button" class="btn-mode-switch" id="btn-use-custom-vlm">Use Your Own Case</button><button type="button" class="btn-mode-switch" id="btn-use-official-vlm" hidden>Back to Official Example</button><button type="button" class="btn-reset" id="btn-reset-vlm" hidden>Reset</button></div>
             </form>
             <div class="eval-result-card" id="vlm-result-box" role="status" aria-live="polite"><div class="result-placeholder"><span class="placeholder-icon">👁️</span><h4>VLM Evaluation Output</h4><p>Choose Order or Times, enter a Task ID, upload video, and provide your VLM credentials.</p></div></div>
           </div>

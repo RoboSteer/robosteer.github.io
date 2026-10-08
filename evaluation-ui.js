@@ -6,9 +6,18 @@
   if (!config || !service || !byId("evaluation")) return;
 
   const groups = {
-    csv: { values: ["speed", "amplitude", "direction", "trajectory", "body_restrain"], label: "CSV" },
-    vlm: { values: ["order", "times"], label: "video" }
+    csv: { values: ["speed", "amplitude", "direction", "trajectory", "body_restrain"] },
+    vlm: { values: ["order", "times"] }
   };
+  const canonicalConstraints = Object.freeze({
+    speed: "speed",
+    amplitude: "amplitude",
+    direction: "direction",
+    trajectory: "trajectory",
+    bodyrestrain: "body_restrain",
+    order: "order",
+    times: "times"
+  });
   const csvSlots = Object.freeze({
     jointPos: { id: "joint-pos", expectedName: "joint_pos.csv" },
     bodyPos: { id: "body-pos", expectedName: "body_pos.csv" },
@@ -16,16 +25,47 @@
   });
   const emptyCsvFiles = () => Object.fromEntries(Object.keys(csvSlots).map(slot => [slot, null]));
   const state = {
-    csv: { files: emptyCsvFiles(), busy: false, constraint: "" },
-    vlm: { file: null, busy: false, constraint: "" }
+    csv: { files: emptyCsvFiles(), busy: false, constraint: "speed", customConstraint: "" },
+    vlm: { file: null, busy: false, constraint: "order", customConstraint: "" }
   };
+  const officialState = {
+    loading: false,
+    error: "",
+    examples: [],
+    byConstraint: new Map()
+  };
+  let evaluationMode = "official";
   let activeType = "csv";
+
   const tab = type => byId(type === "csv" ? "tab-csv" : "tab-vlm");
   const panel = type => byId(type === "csv" ? "panel-csv" : "panel-vlm");
   const form = type => byId(`${type}-evaluation-form`);
   const resultBox = type => byId(`${type}-result-box`);
 
+  function normalizeConstraint(value) {
+    const key = String(value || "").trim().toLowerCase().replace(/[^a-z0-9]+/g, "");
+    return canonicalConstraints[key] || "";
+  }
+
+  function typeForConstraint(value) {
+    const constraint = normalizeConstraint(value);
+    if (groups.csv.values.includes(constraint)) return "csv";
+    if (groups.vlm.values.includes(constraint)) return "vlm";
+    return "";
+  }
+
+  function currentOfficialExample(type) {
+    const constraint = normalizeConstraint(state[type].constraint);
+    return constraint ? officialState.byConstraint.get(constraint) || null : null;
+  }
+
   function idleMessage(type) {
+    if (evaluationMode === "official") {
+      const example = currentOfficialExample(type);
+      return example
+        ? `${example.displayName || "Official example"} is ready. Click Evaluate to run the real evaluation.`
+        : "Choose a constraint with an available official example.";
+    }
     return type === "csv"
       ? "Choose a constraint, enter a Task ID, and upload all three CSV files."
       : "Choose Order or Times, enter a Task ID, upload video, and provide your VLM credentials.";
@@ -38,7 +78,14 @@
     const content = document.createElement("div");
     content.className = "result-placeholder";
     const heading = document.createElement("h4");
-    heading.textContent = name === "idle" ? "Evaluation Output" : name === "file-selected" ? "Files selected" : name === "validating" ? "Checking input" : name === "evaluating" ? "Evaluating…" : name === "invalid-input" ? "Check your input" : "Evaluation unavailable";
+    const headings = {
+      idle: "Evaluation Output",
+      "file-selected": "Files selected",
+      validating: "Checking input",
+      evaluating: "Evaluating…",
+      "invalid-input": "Check your input"
+    };
+    heading.textContent = headings[name] || "Evaluation unavailable";
     const text = document.createElement("p");
     text.textContent = message;
     content.append(heading, text);
@@ -48,7 +95,7 @@
   function showResult(type, response) {
     const box = resultBox(type);
     const result = response.result;
-    box.dataset.state = "success";
+    box.dataset.state = result.satisfied === false ? "failure" : "success";
     box.replaceChildren();
     const wrap = document.createElement("div");
     wrap.className = "result-container";
@@ -58,7 +105,7 @@
     title.textContent = "Result";
     const context = document.createElement("span");
     context.className = "result-timestamp";
-    context.textContent = `${response.constraint.replaceAll("_", " ")} · ${response.taskId}`;
+    context.textContent = `${String(response.constraint || "").replaceAll("_", " ")} · ${response.taskId || ""}`;
     header.append(title, context);
     wrap.append(header);
 
@@ -93,7 +140,9 @@
   }
 
   function setActive(type) {
+    const previous = activeType;
     activeType = type;
+    if (previous === "vlm" && type !== "vlm") clearInput("vlm-api-key");
     for (const other of ["csv", "vlm"]) {
       const active = other === type;
       tab(other).classList.toggle("active", active);
@@ -104,9 +153,59 @@
   }
 
   function syncConstraintButtons(selected) {
+    const normalized = normalizeConstraint(selected);
     byId("eval-constraint-picker").querySelectorAll("button").forEach(button => {
-      button.setAttribute("aria-pressed", String(button.dataset.constraint === selected));
+      button.setAttribute("aria-pressed", String(normalizeConstraint(button.dataset.constraint) === normalized));
     });
+  }
+
+  function renderOfficialExample(type) {
+    const stateBox = byId(`${type}-official-state`);
+    const message = byId(`${type}-official-state-message`);
+    const retry = byId(`${type}-official-retry`);
+    const content = byId(`${type}-official-content`);
+    const example = currentOfficialExample(type);
+    stateBox.hidden = false;
+    content.hidden = true;
+    retry.hidden = true;
+
+    if (officialState.loading) {
+      stateBox.dataset.state = "loading";
+      message.textContent = "Loading the official example…";
+    } else if (officialState.error) {
+      stateBox.dataset.state = "error";
+      message.textContent = officialState.error;
+      retry.hidden = false;
+    } else if (!state[type].constraint) {
+      stateBox.dataset.state = "empty";
+      message.textContent = "Choose a constraint to view its official example.";
+    } else if (!example) {
+      stateBox.dataset.state = "error";
+      message.textContent = "No official example is available for this constraint. You can use your own case instead.";
+    } else {
+      stateBox.hidden = true;
+      content.hidden = false;
+      byId(`${type}-official-name`).textContent = example.displayName || "Official example";
+      byId(`${type}-official-task-id`).value = example.taskId;
+      byId(`${type}-official-description`).textContent = example.description || "No description provided.";
+      byId(`${type}-official-instruction`).textContent = example.steerInstruction || "No steer instruction provided.";
+      byId(`${type}-official-type`).textContent = example.evaluationType || (type === "csv" ? "CSV" : "Video");
+    }
+    updateControls(type);
+  }
+
+  function updateControls(type) {
+    const busy = state[type].busy;
+    const official = evaluationMode === "official";
+    const exampleReady = Boolean(currentOfficialExample(type)) && !officialState.loading && !officialState.error;
+    byId(`btn-eval-${type}`).disabled = busy || (official && !exampleReady);
+    byId(`btn-use-custom-${type}`).hidden = !official;
+    byId(`btn-use-official-${type}`).hidden = official;
+    byId(`btn-reset-${type}`).hidden = official;
+  }
+
+  function announceCurrentContext(type) {
+    status(type, "idle", idleMessage(type));
   }
 
   const configFileType = type => config.fileTypes[type === "csv" ? "csv" : "video"];
@@ -198,6 +297,7 @@
 
   function clearInput(id) {
     const input = byId(id);
+    if (!input) return;
     input.value = "";
     input.defaultValue = "";
   }
@@ -208,39 +308,63 @@
     clearInput("vlm-base-url");
   }
 
-  function resetType(type, { preserveConstraint = "", announce = true } = {}) {
-    form(type).reset();
+  function resetCustomInputs(type) {
     clearInput(`${type}-task-id`);
     clearUploads(type);
     if (type === "vlm") {
       clearVlmPrivateFields();
       byId("vlm-provider-select").value = "";
+      updateProviderRequirements();
     }
-    byId(`${type}-constraint-select`).value = preserveConstraint;
-    state[type].constraint = preserveConstraint;
-    if (announce) status(type, "idle", idleMessage(type));
   }
 
-  function clearForConstraint(type, value) {
-    resetType(type, { preserveConstraint: value });
-    byId(`${type}-task-id`).value = "";
-    syncConstraintButtons(value);
+  function prepareCustomConstraint(type, constraint) {
+    const normalized = normalizeConstraint(constraint);
+    if (state[type].customConstraint !== normalized) {
+      resetCustomInputs(type);
+      state[type].customConstraint = normalized;
+    }
+  }
+
+  function changeConstraint(type, value, { announce = true } = {}) {
+    const constraint = normalizeConstraint(value);
+    state[type].constraint = constraint;
+    byId(`${type}-constraint-select`).value = constraint;
+    if (evaluationMode === "custom") prepareCustomConstraint(type, constraint);
+    if (type === activeType) syncConstraintButtons(constraint);
+    renderOfficialExample(type);
+    if (announce && type === activeType) announceCurrentContext(type);
+  }
+
+  function firstConstraintForType(type) {
+    const fromBackend = officialState.examples.find(example => typeForConstraint(example.constraint) === type);
+    return normalizeConstraint(fromBackend?.constraint) || groups[type].values[0];
   }
 
   function selectConstraint(value) {
-    const type = groups.csv.values.includes(value) ? "csv" : "vlm";
-    if (activeType !== type) {
-      resetType(activeType, { announce: false });
-      resetType(type, { announce: false });
-      setActive(type);
-    }
-    if (state[type].constraint !== value) clearForConstraint(type, value);
-    else syncConstraintButtons(value);
+    const constraint = normalizeConstraint(value);
+    const type = typeForConstraint(constraint);
+    if (!type) return;
+    if (activeType !== type) setActive(type);
+    changeConstraint(type, constraint);
     updateProviderRequirements();
   }
 
+  function setMode(mode) {
+    if (!new Set(["official", "custom"]).has(mode)) return;
+    const leavingCustomVlm = evaluationMode === "custom" && mode === "official";
+    evaluationMode = mode;
+    document.querySelectorAll("[data-mode-section]").forEach(section => {
+      section.hidden = section.dataset.modeSection !== mode;
+    });
+    if (mode === "custom") prepareCustomConstraint(activeType, state[activeType].constraint);
+    if (leavingCustomVlm) clearInput("vlm-api-key");
+    for (const type of ["csv", "vlm"]) updateControls(type);
+    announceCurrentContext(activeType);
+  }
+
   function clearStaleResult(type) {
-    if (["success", "backend-error", "invalid-input"].includes(resultBox(type).dataset.state)) {
+    if (["success", "failure", "backend-error", "invalid-input"].includes(resultBox(type).dataset.state)) {
       const hasFile = type === "csv" ? selectedCsvCount() > 0 : Boolean(state.vlm.file);
       status(type, hasFile ? "file-selected" : "idle", hasFile ? "Files selected. Review the details and evaluate again." : idleMessage(type));
     }
@@ -293,6 +417,7 @@
     for (const item of ["csv", "vlm"]) tab(item).disabled = busy;
     byId(`btn-eval-${type}`).textContent = busy ? label : "Evaluate";
     resultBox(type).setAttribute("aria-busy", String(busy));
+    if (!busy) updateControls(type);
   }
 
   function validateCsvFiles() {
@@ -313,10 +438,28 @@
     baseInput.setAttribute("aria-required", String(Boolean(selected?.requiresBaseUrl)));
   }
 
-  async function evaluate(type) {
-    if (state[type].busy) return;
+  async function evaluateOfficial(type) {
+    const example = currentOfficialExample(type);
+    if (!example) {
+      status(type, "invalid-input", "No official example is available for the selected constraint.");
+      updateControls(type);
+      return;
+    }
+    setBusy(type, true);
+    status(type, "evaluating", "The official example is being evaluated…");
+    try {
+      const response = await service.evaluateOfficialExample(example);
+      showResult(type, response);
+    } catch (caught) {
+      status(type, "backend-error", caught instanceof service.EvaluationError ? caught.message : "Evaluation failed. Please try again.");
+    } finally {
+      setBusy(type, false);
+    }
+  }
+
+  async function evaluateCustom(type) {
     status(type, "validating", "Checking your input…");
-    const constraint = byId(`${type}-constraint-select`).value;
+    const constraint = normalizeConstraint(state[type].constraint);
     const taskId = byId(`${type}-task-id`).value.trim();
     const provider = type === "vlm" ? byId("vlm-provider-select").value : "";
     const modelName = type === "vlm" ? byId("vlm-model-name").value.trim() : "";
@@ -362,21 +505,62 @@
     }
   }
 
-  for (const [slot] of Object.entries(csvSlots)) setupCsvSlot(slot);
+  async function evaluate(type) {
+    if (state[type].busy) return;
+    if (evaluationMode === "official") await evaluateOfficial(type);
+    else await evaluateCustom(type);
+  }
+
+  async function loadOfficialExamples() {
+    if (officialState.loading) return;
+    officialState.loading = true;
+    officialState.error = "";
+    for (const type of ["csv", "vlm"]) renderOfficialExample(type);
+    try {
+      const examples = await service.fetchOfficialExamples();
+      const byConstraint = new Map();
+      for (const example of examples) {
+        const constraint = normalizeConstraint(example.constraint);
+        if (!constraint || byConstraint.has(constraint)) continue;
+        byConstraint.set(constraint, Object.freeze({ ...example, constraint }));
+      }
+      officialState.examples = [...byConstraint.values()];
+      officialState.byConstraint = byConstraint;
+      officialState.loading = false;
+      if (!state.csv.constraint) state.csv.constraint = firstConstraintForType("csv");
+      if (!state.vlm.constraint) state.vlm.constraint = firstConstraintForType("vlm");
+      byId("csv-constraint-select").value = state.csv.constraint;
+      byId("vlm-constraint-select").value = state.vlm.constraint;
+      syncConstraintButtons(state[activeType].constraint);
+      for (const type of ["csv", "vlm"]) renderOfficialExample(type);
+      if (evaluationMode === "official") announceCurrentContext(activeType);
+    } catch (caught) {
+      officialState.loading = false;
+      officialState.error = caught instanceof service.EvaluationError
+        ? caught.message
+        : "Official examples could not be loaded. Please try again.";
+      for (const type of ["csv", "vlm"]) renderOfficialExample(type);
+      if (evaluationMode === "official") status(activeType, "backend-error", officialState.error);
+    }
+  }
+
+  for (const slot of Object.keys(csvSlots)) setupCsvSlot(slot);
   setupVideoFile();
 
   for (const type of ["csv", "vlm"]) {
     form(type).addEventListener("submit", event => { event.preventDefault(); evaluate(type); });
     byId(`btn-reset-${type}`).addEventListener("click", () => {
-      resetType(type);
+      resetCustomInputs(type);
+      state[type].constraint = "";
+      state[type].customConstraint = "";
+      byId(`${type}-constraint-select`).value = "";
       syncConstraintButtons("");
-      updateProviderRequirements();
+      status(type, "idle", idleMessage(type));
     });
-    byId(`${type}-constraint-select`).addEventListener("change", event => {
-      const value = event.target.value;
-      if (value !== state[type].constraint) clearForConstraint(type, value);
-      else syncConstraintButtons(value);
-    });
+    byId(`btn-use-custom-${type}`).addEventListener("click", () => setMode("custom"));
+    byId(`btn-use-official-${type}`).addEventListener("click", () => setMode("official"));
+    byId(`${type}-official-retry`).addEventListener("click", loadOfficialExamples);
+    byId(`${type}-constraint-select`).addEventListener("change", event => changeConstraint(type, event.target.value));
     byId(`${type}-task-id`).addEventListener("input", () => clearStaleResult(type));
   }
 
@@ -389,12 +573,12 @@
   for (const type of ["csv", "vlm"]) {
     tab(type).addEventListener("click", () => {
       if (activeType === type) return;
-      resetType(activeType, { announce: false });
-      resetType(type, { announce: false });
-      syncConstraintButtons("");
       setActive(type);
+      if (!state[type].constraint) changeConstraint(type, firstConstraintForType(type), { announce: false });
+      else syncConstraintButtons(state[type].constraint);
+      if (evaluationMode === "custom") prepareCustomConstraint(type, state[type].constraint);
       updateProviderRequirements();
-      status(type, "idle", idleMessage(type));
+      announceCurrentContext(type);
     });
   }
 
@@ -408,6 +592,11 @@
   byId("vlm-file-types").textContent = `One sample · ${config.fileTypes.video.extensions.join(" / ")}`;
   if (!config.BACKEND_URL.trim()) byId("eval-backend-note").textContent = "Evaluation backend is not connected. No result will be generated until the service is configured.";
   window.addEventListener("pagehide", clearVlmPrivateFields);
+  byId("csv-constraint-select").value = state.csv.constraint;
+  byId("vlm-constraint-select").value = state.vlm.constraint;
   setActive("csv");
+  setMode("official");
+  syncConstraintButtons(state.csv.constraint);
   updateProviderRequirements();
+  loadOfficialExamples();
 })();
