@@ -2,7 +2,7 @@ window.ROBOOSTEER = {
   "authors": [
     { "name": "Minghe Gao", "affiliations": "1,2,3", "note": "*" },
     { "name": "Zhanxi Yan", "affiliations": "1" },
-    { "name": "Jiahui Liu", "affiliations": "1" },
+    { "name": "Jiahui Liu", "affiliations": "1,4" },
     { "name": "Wendong Bu", "affiliations": "1" },
     { "name": "Xiaoting Chen", "affiliations": "1" },
     { "name": "Qizhou Wang", "affiliations": "2", "note": "*" },
@@ -13,7 +13,7 @@ window.ROBOOSTEER = {
     { "name": "Tat-Seng Chua", "affiliations": "3" },
     { "name": "Juncheng Li", "affiliations": "1", "note": "†" }
   ],
-  "team": "¹ ZJU · ² Unitree · ³ NUS",
+  "team": "¹ ZJU · ² Unitree · ³ NUS · ⁴ CSU",
   "abstract": "Behavior Foundation Models (BFMs) are emerging as a new paradigm for translating diverse human intentions into executable humanoid behaviors. As these models evolve beyond behavior generation toward general-purpose behavioral systems, a fundamental question arises: can they be reliably steered according to user intentions?\n\nIn this paper, we introduce the concept of behavioral steerability, defined as the ability of BFMs to faithfully generate behaviors that satisfy user-specified behavioral intentions. To systematically study this capability, we present RoboSteer, the first benchmark for behavioral steerability in BFMs. RoboSteer organizes behavioral steerability into a three-level hierarchy—Conditional Steering, Constraint Steering, and Compositional Steering—and establishes a unified evaluation framework supported by a large-scale multimodal motion corpus.\n\nUsing RoboSteer, we conduct the first large-scale empirical study of behavioral steerability across existing BFMs. Our results reveal that strong behavior generation capability does not necessarily translate into strong behavioral steerability, with the performance gap widening as steering complexity increases. We hope RoboSteer will establish behavioral steerability as a fundamental capability for future BFMs and facilitate the development of more steerable general-purpose behavioral systems.",
   "paperUrl": "https://arxiv.org/abs/2610.10198",
   "datasetUrl": "https://huggingface.co/datasets/YanCORANV/RoboSteer",
