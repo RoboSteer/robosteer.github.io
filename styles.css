@@ -56,6 +56,8 @@ a.resource-link:hover { background: var(--color-accent); border-color: var(--col
 .section-heading { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 40px; align-items: end; margin-bottom: 32px; }
 .section-heading h2 { font-size: var(--text-heading); margin-bottom: 0; }
 .section-heading p { color: var(--color-muted); margin: 0; max-width: 54ch; font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); line-height: 1.6; }
+.evaluation-section .section-heading { grid-template-columns: minmax(0, 1fr); gap: 12px; align-items: start; }
+.evaluation-section .section-heading p { max-width: none; }
 
 /* Unified Split Layout: Figure + Concise Text */
 .split-layout { display: grid; gap: 36px; align-items: start; }
