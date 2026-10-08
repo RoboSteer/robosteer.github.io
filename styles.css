@@ -42,7 +42,10 @@ img, video { max-width: 100%; display: block; }
 .project-name { color: var(--color-accent); font-family: var(--font-display); font-weight: 600; font-size: 1.4rem; margin-bottom: 16px; }
 .paper h2 { font-size: clamp(2rem, 1.5rem + 2vw, 3rem); margin-bottom: 30px; }
 .authors { color: var(--color-accent); font-size: clamp(1.1rem, 1.05rem + 0.25vw, 1.25rem); margin-bottom: 8px; }
-.team { color: var(--color-muted); font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem); margin-bottom: 28px; }
+.author-name { white-space: nowrap; }
+.author-name sup { font-size: .68em; margin-left: .12em; }
+.team { color: var(--color-muted); font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem); margin-bottom: 2px; }
+.author-notes { color: var(--color-muted); font-size: var(--text-sm); margin-bottom: 26px; }
 .resource-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 .resource-link { display: inline-flex; align-items: center; gap: 8px; border-radius: 100px; background: var(--color-ink); border: 1px solid var(--color-ink); color: var(--color-white); min-height: 44px; padding: 10px 22px; text-decoration: none; white-space: nowrap; font-size: var(--text-sm); font-weight: 500; }
 .resource-icon { width: 20px; height: 20px; flex: none; }
@@ -286,6 +289,11 @@ a.resource-link:hover { background: var(--color-accent); border-color: var(--col
 .closing { border-top: 1px solid var(--color-line); display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 64px; }
 .closing h2 { font-size: clamp(1.6rem, 1.3rem + 1vw, 2rem); }
 .closing p { color: var(--color-muted); font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem); }
+.contributors-list { list-style: none; margin: 0; padding: 0; }
+.contributor { display: grid; gap: 2px; padding: 12px 0; border-top: 1px solid var(--color-line); }
+.contributor strong { font-weight: 650; }
+.contributor-role { color: var(--color-muted); font-size: var(--text-sm); }
+.contributor-email { color: var(--color-accent); font-size: var(--text-sm); overflow-wrap: anywhere; }
 pre { background: var(--color-soft); padding: 24px; font: .875rem/1.65 var(--font-code); overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; border: 1px solid var(--color-line); }
 .copy-button { background: var(--color-paper); color: var(--color-ink); border: 1px solid var(--color-line); border-radius: var(--radius-sm); min-height: 44px; padding: 8px 16px; font-size: var(--text-sm); }
 .copy-button:hover { border-color: var(--color-ink); }

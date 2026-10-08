@@ -1,18 +1,37 @@
 window.ROBOOSTEER = {
-  "authors": "Authors to be announced",
-  "team": "Team and affiliations to be announced",
+  "authors": [
+    { "name": "Minghe Gao", "affiliations": "1,2,3", "note": "*" },
+    { "name": "Zhanxi Yan", "affiliations": "1" },
+    { "name": "Jiahui Liu", "affiliations": "1" },
+    { "name": "Wendong Bu", "affiliations": "1" },
+    { "name": "Xiaoting Chen", "affiliations": "1" },
+    { "name": "Qizhou Wang", "affiliations": "2", "note": "*" },
+    { "name": "Yi Su", "affiliations": "2" },
+    { "name": "Siliang Tang", "affiliations": "1" },
+    { "name": "Jun Xiao", "affiliations": "1" },
+    { "name": "Yueting Zhuang", "affiliations": "1" },
+    { "name": "Tat-Seng Chua", "affiliations": "3" },
+    { "name": "Juncheng Li", "affiliations": "1", "note": "†" }
+  ],
+  "team": "¹ ZJU · ² Unitree · ³ NUS",
   "abstract": "Behavior Foundation Models (BFMs) are emerging as a new paradigm for translating diverse human intentions into executable humanoid behaviors. As these models evolve beyond behavior generation toward general-purpose behavioral systems, a fundamental question arises: can they be reliably steered according to user intentions?\n\nIn this paper, we introduce the concept of behavioral steerability, defined as the ability of BFMs to faithfully generate behaviors that satisfy user-specified behavioral intentions. To systematically study this capability, we present RoboSteer, the first benchmark for behavioral steerability in BFMs. RoboSteer organizes behavioral steerability into a three-level hierarchy—Conditional Steering, Constraint Steering, and Compositional Steering—and establishes a unified evaluation framework supported by a large-scale multimodal motion corpus.\n\nUsing RoboSteer, we conduct the first large-scale empirical study of behavioral steerability across existing BFMs. Our results reveal that strong behavior generation capability does not necessarily translate into strong behavioral steerability, with the performance gap widening as steering complexity increases. We hope RoboSteer will establish behavioral steerability as a fundamental capability for future BFMs and facilitate the development of more steerable general-purpose behavioral systems.",
-  "paperUrl": "",
+  "paperUrl": "https://arxiv.org/abs/2610.10198",
   "datasetUrl": "https://huggingface.co/datasets/YanCORANV/RoboSteer",
   "evaluatorUrl": "https://huggingface.co/Leontc/RoboSteer-evaluator",
-  "codeUrl": "",
+  "codeUrl": "https://github.com/RoboSteer/RoboSteerBench",
   "figure": {
     "src": "assets/figures/benchmark-statistics.png",
     "alt": "Six-panel benchmark statistics figure covering task scale, video durations, input modalities, and task distributions.",
     "caption": "Benchmark overview from the accompanying appendix. Full-benchmark counts include Order and Times, which require local construction from official source datasets."
   },
-  "bibtex": "",
-  "contributors": "Coming soon.",
+  "bibtex": "@misc{gao2026benchmarking,\n  title={Benchmarking Behavioral Steerability in Behavior Foundation Models},\n  author={Minghe Gao and Zhanxi Yan and Jiahui Liu and Wendong Bu and Xiaoting Chen and Qizhou Wang and Yi Su and Siliang Tang and Jun Xiao and Yueting Zhuang and Tat-Seng Chua and Juncheng Li},\n  year={2026},\n  eprint={2610.10198},\n  archivePrefix={arXiv},\n  primaryClass={cs.RO},\n  url={https://arxiv.org/abs/2610.10198}\n}",
+  "contributors": [
+    { "name": "Minghe Gao", "role": "Project Lead", "email": "minghegao@zju.edu.cn" },
+    { "name": "Zhanxi Yan", "role": "Task Construction & Benchmark Curation", "email": "zhanxi.24@intl.zju.edu.cn" },
+    { "name": "Jiahui Liu", "role": "Level Design", "email": "1602230208@csu.edu.cn" },
+    { "name": "Wendong Bu", "role": "Metadata Collection", "email": "wendongbu@zju.edu.cn" },
+    { "name": "Xiaoting Chen", "role": "Evaluation", "email": "xtchen128@gmail.com" }
+  ],
   "heroVideos": [
     {
       "src": "assets/motion/hf-g1-s4nk5mlyTnk_00009_0_65.mp4",

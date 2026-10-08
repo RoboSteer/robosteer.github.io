@@ -11,8 +11,34 @@
   };
   const safeUrl = value => typeof value === "string" && /^https:\/\//.test(value);
   const setText = (id, value) => { if (value) byId(id).textContent = value; };
-  setText("authors", content.authors); setText("team", content.team);
-  setText("contributors", content.contributors);
+  if (Array.isArray(content.authors)) {
+    const authors = byId("authors");
+    authors.replaceChildren();
+    content.authors.forEach((author, index) => {
+      if (index) authors.append(document.createTextNode(", "));
+      const name = el("span", "author-name", author.name);
+      if (author.affiliations || author.note) {
+        name.append(el("sup", null, `${author.affiliations || ""}${author.note || ""}`));
+      }
+      authors.append(name);
+    });
+  } else setText("authors", content.authors);
+  setText("team", content.team);
+  if (Array.isArray(content.contributors)) {
+    const list = el("ul", "contributors-list");
+    content.contributors.forEach(contributor => {
+      const item = el("li", "contributor");
+      item.append(el("strong", null, contributor.name));
+      item.append(el("span", "contributor-role", contributor.role));
+      if (contributor.email) {
+        const email = el("a", "contributor-email", contributor.email);
+        email.href = `mailto:${contributor.email}`;
+        item.append(email);
+      }
+      list.append(item);
+    });
+    byId("contributors").replaceChildren(list);
+  } else setText("contributors", content.contributors);
   if (content.abstract) {
     const target = byId("abstract");
     const paragraphs = Array.isArray(content.abstract) ? content.abstract : content.abstract.split(/\n\n+/);
