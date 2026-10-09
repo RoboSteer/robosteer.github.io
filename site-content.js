@@ -22,7 +22,7 @@ window.ROBOOSTEER = {
   "figure": {
     "src": "assets/figures/benchmark-statistics.png",
     "alt": "Six-panel benchmark statistics figure covering task scale, video durations, input modalities, and task distributions.",
-    "caption": "Benchmark overview from the accompanying appendix. Full-benchmark counts include Order and Times, which require local construction from official source datasets."
+    "caption": "Benchmark overview from the accompanying appendix. Full-benchmark counts include Order and Times; their existing task and asset files are included in the complete dataset archives. See the dataset card for source and licensing details."
   },
   "bibtex": "@misc{gao2026benchmarking,\n  title={Benchmarking Behavioral Steerability in Behavior Foundation Models},\n  author={Minghe Gao and Zhanxi Yan and Jiahui Liu and Wendong Bu and Xiaoting Chen and Qizhou Wang and Yi Su and Siliang Tang and Jun Xiao and Yueting Zhuang and Tat-Seng Chua and Juncheng Li},\n  year={2026},\n  eprint={2610.10198},\n  archivePrefix={arXiv},\n  primaryClass={cs.RO},\n  url={https://arxiv.org/abs/2610.10198}\n}",
   "contributors": [
