@@ -60,10 +60,10 @@
     }));
   }
   const resources = [
-    ["Homepage", "#home"],
-    ["Paper", content.paperUrl],
+    ["Homepage", "#home", "robot"],
+    ["Paper", content.paperUrl, "arxiv"],
     ["Hugging Face", "#hf-repositories", "huggingface"],
-    ["Code", content.codeUrl]
+    ["Code", content.codeUrl, "github"]
   ];
   for (const [label, url, icon] of resources) {
     const available = url === "#home" || url === "#hf-repositories" || safeUrl(url);
@@ -72,9 +72,9 @@
     if (available) item.href = url;
     else item.setAttribute("aria-disabled", "true");
     if (safeUrl(url)) { item.target = "_blank"; item.rel = "noopener noreferrer"; }
-    if (icon === "huggingface") {
+    if (icon) {
       const logo = document.createElement("img");
-      logo.src = "assets/huggingface-logo.svg";
+      logo.src = `assets/${icon}-logo.svg`;
       logo.alt = "";
       logo.width = 20;
       logo.height = 20;
