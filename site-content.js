@@ -28,9 +28,9 @@ window.ROBOOSTEER = {
   "contributors": [
     { "name": "Minghe Gao", "role": "Project Lead", "email": "minghegao@zju.edu.cn" },
     { "name": "Zhanxi Yan", "role": "Task Construction & Benchmark Curation", "email": "zhanxi.24@intl.zju.edu.cn" },
-    { "name": "Jiahui Liu", "role": "Level Design", "email": "1602230208@csu.edu.cn" },
+    { "name": "Jiahui Liu", "role": "Evaluation", "email": "1602230208@csu.edu.cn" },
     { "name": "Wendong Bu", "role": "Metadata Collection", "email": "wendongbu@zju.edu.cn" },
-    { "name": "Xiaoting Chen", "role": "Evaluation", "email": "xtchen128@gmail.com" }
+    { "name": "Xiaoting Chen", "role": "Reasoning", "email": "xtchen128@gmail.com" }
   ],
   "heroVideos": [
     {
