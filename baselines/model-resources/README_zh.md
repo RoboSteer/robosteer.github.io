@@ -4,10 +4,14 @@
 
 本仓库提供九条动作与机器人流水线的本项目教程和参考脚本。**九个模型目录目前均仅供参考，不构成仅凭公开文件即可运行的完整复现包。** 上游项目源码、模型权重、人体模型和机器人资产须由使用者按各自许可另行取得。历史验证记录说明原有环境中做过的检查，不等于当前公开包已经在全新机器上复现。
 
+## 推荐从 GEM 开始
+
+如果准备复现基线，建议先看 [GEM](models/gem/README_zh.md)。在本目录的模型中，GEM 的五类任务流程有最详细的本项目说明，并提供编排脚本、自建输入样例及 SMPL-X/G1/SONIC 参考结果。请先阅读其[公开范围](models/gem/PUBLIC_SCOPE.md)。当前公开包仅供参考，尚不能独立完成复现；GEM、GMR、SONIC 的源码，以及权重、人体模型和机器人资产，仍须按各自许可另行取得。
+
 | 模型 | 当前公开内容 | 主要外部依赖 |
 | --- | --- | --- |
-| [MotionCraft](models/motioncraft/README_zh.md) | 原创流水线参考脚本和教程 | 上游 MotionCraft、GMR、SONIC 源码与资源 |
 | [GEM](models/gem/README_zh.md) | 五类任务编排脚本、教程、自建样例及参考后处理结果 | 上游 GEM、GMR、SONIC 源码与资源 |
+| [MotionCraft](models/motioncraft/README_zh.md) | 原创流水线参考脚本和教程 | 上游 MotionCraft、GMR、SONIC 源码与资源 |
 | [Language of Motion](models/language_of_motion/README.md) | 参考工具和教程 | 上游 LoM、GMR、SONIC 源码与资源 |
 | [ListenDenoiseAction](models/listen_denoise_action/README_zh.md) | 原创适配与编排脚本 | 上游 LDA、GMR 源码与资源 |
 | [TextOp](models/textop/README.md) | 参考教程、原创检查脚本和文本样例 | 上游 TextOp 源码与资源 |
