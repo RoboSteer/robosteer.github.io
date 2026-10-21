@@ -13,11 +13,15 @@ tags:
 [中文说明](README_zh.md) · [Release scope](PUBLIC_RELEASE_SCOPE.md) · [MIT scope](LICENSE_SCOPE.md) · [Model index](model_index.csv)
 
 This repository publishes project-authored guides and reference scripts for nine motion and robot pipelines. **All nine model entries are reference material.** None is a self-contained, publicly reproducible model release: upstream project source, checkpoints, body models, and robot assets must be obtained separately under their own terms. Historical validation records describe runs in the original environments; they do not establish a fresh installation from these files.
+## Recommended starting point: GEM
+
+If you plan to reproduce a baseline, start with [GEM](models/gem/README.md). Its five-task workflow has the most detailed project-authored instructions in this collection, along with orchestration scripts, constructed input examples, and SMPL-X/G1/SONIC reference results. Read its [public scope](models/gem/PUBLIC_SCOPE.md) first. The public package is a reference, not a complete reproducible release: obtain GEM, GMR, SONIC, weights, body models, and robot assets separately under their respective terms.
 
 | Model | Current public material | Main missing dependency |
 | --- | --- | --- |
-| [MotionCraft](models/motioncraft/README.md) | Reference pipeline scripts and guides | Upstream MotionCraft, GMR and SONIC source and resources |
+
 | [GEM](models/gem/README.md) | Five-task scripts, constructed examples and SMPL-X/G1/SONIC reference results | Upstream GEM, GMR and SONIC source and resources |
+| [MotionCraft](models/motioncraft/README.md) | Reference pipeline scripts and guides | Upstream MotionCraft, GMR and SONIC source and resources |
 | [Language of Motion](models/language_of_motion/README_EN.md) | Reference tools and guides | Upstream LoM, GMR and SONIC source and resources |
 | [ListenDenoiseAction](models/listen_denoise_action/README.md) | Original adapters and orchestration | Upstream LDA and GMR source and resources |
 | [TextOp](models/textop/README.md) | Reference guide, original checker and text examples | Upstream TextOp source and resources |
